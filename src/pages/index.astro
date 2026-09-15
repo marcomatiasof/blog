@@ -1,0 +1,38 @@
+---
+/**
+ * src/pages/index.astro
+ * Root "/" page — serves as a static fallback.
+ * The Cloudflare Pages Function (functions/index.js) intercepts this route
+ * and redirects to the appropriate locale BEFORE this page is ever served.
+ *
+ * This page only shows if the Function is not running (e.g., local npm run dev).
+ */
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      (function () {
+        var cookieMatch = document.cookie.match(/(?:^|;\s*)preferred_locale=([^;]+)/);
+        var pref = cookieMatch ? cookieMatch[1] : null;
+        var lang = pref || (navigator.language || navigator.userLanguage || '').toLowerCase();
+        var target = '/en/';
+        if (lang.startsWith('pt')) target = '/pt/';
+        else if (lang.startsWith('es')) target = '/es/';
+        window.location.replace(target);
+      })();
+    </script>
+    <meta http-equiv="refresh" content="0; url=/en/" />
+    <link rel="canonical" href="https://yourblog.com/en/" />
+    <style>
+      body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f8fafc; }
+      p { color: #475569; }
+      a { color: #6366f1; }
+    </style>
+  </head>
+  <body>
+    <p>Redirecting… <a href="/en/">Click here if not redirected.</a></p>
+  </body>
+</html>

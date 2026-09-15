@@ -1,0 +1,294 @@
+---
+/**
+ * src/pages/[lang]/[slug].astro
+ * Individual article page. Generates all lang/slug combinations at build time.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+import { useTranslations, getHreflangAlternates, formatDate } from '../../i18n/utils';
+import { SUPPORTED_LOCALES, SITE_URL, LOCALE_NAMES, LOCALE_FLAGS, type SupportedLocale } from '../../i18n/constants';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', (post) => !post.data.draft);
+
+  return allPosts.map((post) => ({
+    params: {
+      lang: post.data.locale,
+      slug: post.data.slug,
+    },
+    props: { post, allPosts },
+  }));
+}
+
+const { post, allPosts } = Astro.props;
+const { lang } = Astro.params as { lang: SupportedLocale };
+const t = useTranslations(lang);
+
+const { Content } = await render(post);
+
+const hreflangAlternates = getHreflangAlternates(post.data.translationKey, allPosts);
+const formattedDate = formatDate(post.data.date, lang);
+const canonicalUrl = `${SITE_URL}/${lang}/${post.data.slug}/`;
+
+// Build links to other translations of this article
+const translationLinks = SUPPORTED_LOCALES
+  .filter((locale) => locale !== lang)
+  .map((locale) => {
+    const alternate = hreflangAlternates.find(
+      (a) => a.hreflang === locale
+    );
+    return alternate ? { locale, url: alternate.href } : null;
+  })
+  .filter(Boolean) as Array<{ locale: SupportedLocale; url: string }>;
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  lang={lang}
+  image={post.data.image}
+  hreflangAlternates={hreflangAlternates}
+  canonicalUrl={canonicalUrl}
+>
+  <Header slot="header" lang={lang} translationKey={post.data.translationKey} />
+
+  <div class="article-page">
+    <div class="container">
+      <!-- Article Header -->
+      <header class="article-header">
+        {post.data.tags.length > 0 && (
+          <div class="article-tags">
+            {post.data.tags.slice(0, 4).map((tag) => (
+              <span class="article-tag">{tag}</span>
+            ))}
+          </div>
+        )}
+
+        <h1 class="article-title">{post.data.title}</h1>
+        <p class="article-description">{post.data.description}</p>
+
+        <div class="article-meta">
+          <div class="article-meta__left">
+            <time class="article-meta__date" datetime={post.data.date.toISOString()}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <rect x="1" y="2" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.25"/>
+                <path d="M1 5.5H13" stroke="currentColor" stroke-width="1.25"/>
+                <path d="M4 1V3M10 1V3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+              </svg>
+              {formattedDate}
+            </time>
+            <span class="article-meta__author">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.25"/>
+                <path d="M1.5 12.5C1.5 10.015 4.015 8 7 8C9.985 8 12.5 10.015 12.5 12.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+              </svg>
+              {post.data.author}
+            </span>
+          </div>
+
+          {translationLinks.length > 0 && (
+            <div class="article-meta__translations">
+              <span class="article-meta__also">{t('article.alsoAvailableIn')}:</span>
+              {translationLinks.map(({ locale, url }) => (
+                <a href={url} class="article-meta__lang-link" hreflang={locale}>
+                  {LOCALE_FLAGS[locale as SupportedLocale]} {LOCALE_NAMES[locale as SupportedLocale]}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </header>
+
+      <!-- Hero Image -->
+      {post.data.image && (
+        <div class="article-hero-image">
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            loading="eager"
+            decoding="async"
+            width="1200"
+            height="630"
+            fetchpriority="high"
+          />
+        </div>
+      )}
+
+      <!-- AdSense — top of content (placeholder) -->
+      <div class="article-adsense adsense-slot" aria-hidden="true">Advertisement</div>
+
+      <!-- Article Content -->
+      <div class="prose article-content">
+        <Content />
+      </div>
+
+      <!-- AdSense — bottom of content (placeholder) -->
+      <div class="article-adsense adsense-slot" aria-hidden="true">Advertisement</div>
+
+      <!-- Tags section -->
+      {post.data.tags.length > 0 && (
+        <div class="article-tags-section">
+          <span class="article-tags-label">{t('article.tags')}:</span>
+          <div class="article-tags">
+            {post.data.tags.map((tag) => (
+              <span class="article-tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <Footer slot="footer" lang={lang} />
+</BaseLayout>
+
+<style>
+  .article-page {
+    padding: 3rem 0 4rem;
+  }
+
+  /* ── Article Header ── */
+  .article-header {
+    max-width: var(--content-width);
+    margin: 0 auto 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .article-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    background: var(--color-accent-light);
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+  }
+
+  .article-title {
+    font-size: clamp(1.875rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .article-description {
+    font-size: 1.075rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0;
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1rem;
+    font-style: italic;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .article-meta__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .article-meta__date,
+  .article-meta__author {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .article-meta__translations {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .article-meta__also {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .article-meta__lang-link {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    background: var(--color-accent-light);
+    padding: 0.2rem 0.625rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .article-meta__lang-link:hover {
+    background: var(--color-accent);
+    color: white;
+  }
+
+  /* ── Hero Image ── */
+  .article-hero-image {
+    max-width: var(--content-width);
+    margin: 0 auto 2rem;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .article-hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── AdSense ── */
+  .article-adsense {
+    max-width: var(--content-width);
+    margin: 2rem auto;
+  }
+
+  /* ── Content ── */
+  .article-content {
+    margin-bottom: 3rem;
+  }
+
+  /* ── Tags section ── */
+  .article-tags-section {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .article-tags-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+</style>

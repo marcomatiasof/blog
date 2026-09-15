@@ -1,0 +1,212 @@
+---
+/**
+ * Header.astro
+ * Site-wide header with logo, navigation, and language picker.
+ */
+import LanguagePicker from './LanguagePicker.astro';
+import { useTranslations, getLangFromUrl } from '../i18n/utils';
+import type { SupportedLocale } from '../i18n/constants';
+
+interface Props {
+  lang: SupportedLocale;
+  translationKey?: string;
+}
+
+const { lang, translationKey } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<header class="header" id="site-header">
+  <div class="header__inner container">
+    <!-- Logo -->
+    <a href={`/${lang}/`} class="header__logo" aria-label="TechFlow Blog — Home">
+      <svg class="header__logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--color-accent)"/>
+        <path d="M8 16H24M16 8L24 16L16 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="header__logo-text">TechFlow</span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="header__nav" aria-label="Main navigation">
+      <a href={`/${lang}/`} class="header__nav-link">{t('nav.home')}</a>
+      <a href={`/${lang}/`} class="header__nav-link">{t('nav.articles')}</a>
+    </nav>
+
+    <!-- Right side: language picker -->
+    <div class="header__actions">
+      <LanguagePicker currentLang={lang} translationKey={translationKey} />
+    </div>
+
+    <!-- Mobile menu button -->
+    <button class="header__mobile-menu-btn" aria-label="Open menu" aria-expanded="false" id="mobile-menu-btn">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <path d="M3 6H19M3 11H19M3 16H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile nav overlay -->
+  <div class="header__mobile-nav" id="mobile-nav" hidden>
+    <nav aria-label="Mobile navigation">
+      <a href={`/${lang}/`} class="header__mobile-link">{t('nav.home')}</a>
+      <a href={`/${lang}/`} class="header__mobile-link">{t('nav.articles')}</a>
+      <div class="header__mobile-lang">
+        <LanguagePicker currentLang={lang} translationKey={translationKey} />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-height);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .header__logo-icon {
+    flex-shrink: 0;
+  }
+
+  .header__logo-text {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.03em;
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+  }
+
+  .header__nav-link {
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .header__nav-link:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+  }
+
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: auto;
+  }
+
+  .header__mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    padding: 0.375rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+  }
+
+  .header__mobile-menu-btn:hover {
+    background: var(--color-bg-secondary);
+  }
+
+  .header__mobile-nav {
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background: var(--color-bg-card);
+    border-bottom: 1px solid var(--color-border);
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow-lg);
+    animation: slideDown 0.2s ease-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .header__mobile-link {
+    display: block;
+    padding: 0.75rem 0;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border-subtle);
+    transition: color 0.2s;
+  }
+
+  .header__mobile-link:hover {
+    color: var(--color-accent);
+  }
+
+  .header__mobile-lang {
+    padding-top: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .header__nav,
+    .header__actions {
+      display: none;
+    }
+    .header__mobile-menu-btn {
+      display: flex;
+      margin-left: auto;
+    }
+    .header {
+      position: relative;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const nav = document.getElementById('mobile-nav');
+
+  if (btn && nav) {
+    btn.addEventListener('click', () => {
+      const isOpen = nav.hasAttribute('hidden');
+      if (isOpen) {
+        nav.removeAttribute('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        nav.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>

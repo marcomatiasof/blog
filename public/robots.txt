@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://techflow.vercel.app/sitemap-index.xml

@@ -63,6 +63,9 @@ const relatedPosts = allPosts
   image={post.data.image}
   hreflangAlternates={hreflangAlternates}
   canonicalUrl={canonicalUrl}
+  type="article"
+  author={post.data.author}
+  articleDate={post.data.date}
 >
   <Header slot="header" lang={lang} translationKey={post.data.translationKey} />
 

@@ -15,6 +15,9 @@ interface Props {
   image?: string;
   hreflangAlternates?: Array<{ hreflang: string; href: string }>;
   canonicalUrl?: string;
+  type?: 'website' | 'article';
+  author?: string;
+  articleDate?: Date;
 }
 
 const {
@@ -24,6 +27,9 @@ const {
   image = '/images/og-default.jpg',
   hreflangAlternates = [],
   canonicalUrl,
+  type = 'website',
+  author = SITE_NAME,
+  articleDate,
 } = Astro.props;
 
 const ogImage = image.startsWith('http') ? image : `${SITE_URL}${image}`;
@@ -40,6 +46,8 @@ const canonical = canonicalUrl ?? Astro.url.href;
     <title>{title} | {SITE_NAME}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content={author} />
 
     <!-- Hreflang for i18n SEO -->
     {hreflangAlternates.map((alt) => (
@@ -47,7 +55,7 @@ const canonical = canonicalUrl ?? Astro.url.href;
     ))}
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:title" content={`${title} | ${SITE_NAME}`} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
@@ -63,6 +71,26 @@ const canonical = canonicalUrl ?? Astro.url.href;
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify(
+      type === 'article' ? {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": title,
+        "image": [ogImage],
+        "datePublished": articleDate ? articleDate.toISOString() : undefined,
+        "author": [{
+          "@type": "Person",
+          "name": author
+        }]
+      } : {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": SITE_NAME,
+        "url": SITE_URL
+      }
+    )} />
 
     <!-- Google Fonts: Inter (Sans) + Newsreader (Editorial Serif for James Clear feel) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

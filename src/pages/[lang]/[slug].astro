@@ -1,11 +1,14 @@
 ---
 /**
  * src/pages/[lang]/[slug].astro
- * Individual article page. Generates all lang/slug combinations at build time.
+ * Individual article page template.
+ * James Clear editorial reading experience + Zen Habits serene typography + AdSense & Newsletter placement.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import NewsletterBox from '../../components/NewsletterBox.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
 import { getCollection, render } from 'astro:content';
 import { useTranslations, getHreflangAlternates, formatDate } from '../../i18n/utils';
 import { SUPPORTED_LOCALES, SITE_URL, LOCALE_NAMES, LOCALE_FLAGS, type SupportedLocale } from '../../i18n/constants';
@@ -26,11 +29,15 @@ const { post, allPosts } = Astro.props;
 const { lang } = Astro.params as { lang: SupportedLocale };
 const t = useTranslations(lang);
 
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
 const hreflangAlternates = getHreflangAlternates(post.data.translationKey, allPosts);
 const formattedDate = formatDate(post.data.date, lang);
 const canonicalUrl = `${SITE_URL}/${lang}/${post.data.slug}/`;
+
+// Calculate estimated reading time
+const wordCount = post.body ? post.body.split(/\s+/).length : 1200;
+const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 220));
 
 // Build links to other translations of this article
 const translationLinks = SUPPORTED_LOCALES
@@ -42,6 +49,11 @@ const translationLinks = SUPPORTED_LOCALES
     return alternate ? { locale, url: alternate.href } : null;
   })
   .filter(Boolean) as Array<{ locale: SupportedLocale; url: string }>;
+
+// Related posts for "Leia também" (excluding current post)
+const relatedPosts = allPosts
+  .filter((p) => p.data.locale === lang && p.data.slug !== post.data.slug)
+  .slice(0, 3);
 ---
 
 <BaseLayout
@@ -54,13 +66,13 @@ const translationLinks = SUPPORTED_LOCALES
 >
   <Header slot="header" lang={lang} translationKey={post.data.translationKey} />
 
-  <div class="article-page">
+  <article class="article-page">
     <div class="container">
       <!-- Article Header -->
       <header class="article-header">
         {post.data.tags.length > 0 && (
           <div class="article-tags">
-            {post.data.tags.slice(0, 4).map((tag) => (
+            {post.data.tags.map((tag) => (
               <span class="article-tag">{tag}</span>
             ))}
           </div>
@@ -71,20 +83,33 @@ const translationLinks = SUPPORTED_LOCALES
 
         <div class="article-meta">
           <div class="article-meta__left">
-            <time class="article-meta__date" datetime={post.data.date.toISOString()}>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <rect x="1" y="2" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.25"/>
-                <path d="M1 5.5H13" stroke="currentColor" stroke-width="1.25"/>
-                <path d="M4 1V3M10 1V3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+            <time class="article-meta__item" datetime={post.data.date.toISOString()}>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M2 6H14" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M5 1V4M11 1V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
               {formattedDate}
             </time>
-            <span class="article-meta__author">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <circle cx="7" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.25"/>
-                <path d="M1.5 12.5C1.5 10.015 4.015 8 7 8C9.985 8 12.5 10.015 12.5 12.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+            
+            <span class="article-meta__divider">•</span>
+            
+            <span class="article-meta__item">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/>
+                <polyline points="8 4 8 8 11 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
-              {post.data.author}
+              {readTimeMinutes} {t('article.readTime')}
+            </span>
+
+            <span class="article-meta__divider">•</span>
+
+            <span class="article-meta__item">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M2 14C2 11.2386 4.68629 9 8 9C11.3137 9 14 11.2386 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              {t('article.by')} {post.data.author}
             </span>
           </div>
 
@@ -93,7 +118,7 @@ const translationLinks = SUPPORTED_LOCALES
               <span class="article-meta__also">{t('article.alsoAvailableIn')}:</span>
               {translationLinks.map(({ locale, url }) => (
                 <a href={url} class="article-meta__lang-link" hreflang={locale}>
-                  {LOCALE_FLAGS[locale as SupportedLocale]} {LOCALE_NAMES[locale as SupportedLocale]}
+                  {LOCALE_FLAGS[locale]} {LOCALE_NAMES[locale]}
                 </a>
               ))}
             </div>
@@ -101,52 +126,42 @@ const translationLinks = SUPPORTED_LOCALES
         </div>
       </header>
 
-      <!-- Hero Image -->
-      {post.data.image && (
-        <div class="article-hero-image">
-          <img
-            src={post.data.image}
-            alt={post.data.title}
-            loading="eager"
-            decoding="async"
-            width="1200"
-            height="630"
-            fetchpriority="high"
-          />
-        </div>
-      )}
-
-      <!-- AdSense — top of content (placeholder) -->
+      <!-- AdSense Top Banner -->
       <div class="article-adsense adsense-slot" aria-hidden="true">Advertisement</div>
 
-      <!-- Article Content -->
+      <!-- Main Prose Content -->
       <div class="prose article-content">
         <Content />
       </div>
 
-      <!-- AdSense — bottom of content (placeholder) -->
+      <!-- In-Article Newsletter Subscription Box (James Clear / Zen Habits style) -->
+      <div class="article-newsletter-wrap">
+        <NewsletterBox lang={lang} variant="card" />
+      </div>
+
+      <!-- AdSense Bottom Banner -->
       <div class="article-adsense adsense-slot" aria-hidden="true">Advertisement</div>
 
-      <!-- Tags section -->
-      {post.data.tags.length > 0 && (
-        <div class="article-tags-section">
-          <span class="article-tags-label">{t('article.tags')}:</span>
-          <div class="article-tags">
-            {post.data.tags.map((tag) => (
-              <span class="article-tag">{tag}</span>
+      <!-- Related Posts Section (Leia também) -->
+      {relatedPosts.length > 0 && (
+        <section class="related-section">
+          <h2 class="related-section__title">{t('article.readNext')}</h2>
+          <div class="related-section__grid">
+            {relatedPosts.map((relatedPost) => (
+              <ArticleCard post={relatedPost} lang={lang} />
             ))}
           </div>
-        </div>
+        </section>
       )}
     </div>
-  </div>
+  </article>
 
   <Footer slot="footer" lang={lang} />
 </BaseLayout>
 
 <style>
   .article-page {
-    padding: 3rem 0 4rem;
+    padding: 3.5rem 0 5rem;
   }
 
   /* ── Article Header ── */
@@ -155,28 +170,29 @@ const translationLinks = SUPPORTED_LOCALES
     margin: 0 auto 2.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
   .article-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.375rem;
+    gap: 0.5rem;
   }
 
   .article-tag {
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.725rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     color: var(--color-accent);
     background: var(--color-accent-light);
-    padding: 0.2rem 0.5rem;
+    padding: 0.25rem 0.625rem;
     border-radius: 999px;
   }
 
   .article-title {
-    font-size: clamp(1.875rem, 4vw, 2.75rem);
+    font-family: var(--font-serif);
+    font-size: clamp(2.125rem, 4.5vw, 3.25rem);
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.03em;
@@ -185,39 +201,45 @@ const translationLinks = SUPPORTED_LOCALES
   }
 
   .article-description {
-    font-size: 1.075rem;
+    font-size: 1.15rem;
     color: var(--color-text-secondary);
     line-height: 1.65;
     margin: 0;
     border-left: 3px solid var(--color-accent);
-    padding-left: 1rem;
+    padding-left: 1.25rem;
     font-style: italic;
   }
 
   .article-meta {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    padding-top: 0.75rem;
+    gap: 1rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--color-border);
+    margin-top: 0.5rem;
   }
 
   .article-meta__left {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.625rem;
   }
 
-  .article-meta__date,
-  .article-meta__author {
+  .article-meta__item {
     display: flex;
     align-items: center;
     gap: 0.375rem;
     font-size: 0.85rem;
     color: var(--color-text-muted);
     font-weight: 500;
+  }
+
+  .article-meta__divider {
+    color: var(--color-border);
+    font-size: 0.85rem;
   }
 
   .article-meta__translations {
@@ -237,7 +259,7 @@ const translationLinks = SUPPORTED_LOCALES
     font-weight: 600;
     color: var(--color-accent);
     background: var(--color-accent-light);
-    padding: 0.2rem 0.625rem;
+    padding: 0.25rem 0.625rem;
     border-radius: 999px;
     text-decoration: none;
     transition: background 0.2s, color 0.2s;
@@ -248,47 +270,41 @@ const translationLinks = SUPPORTED_LOCALES
     color: white;
   }
 
-  /* ── Hero Image ── */
-  .article-hero-image {
-    max-width: var(--content-width);
-    margin: 0 auto 2rem;
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    box-shadow: var(--shadow-xl);
-  }
-
-  .article-hero-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
   /* ── AdSense ── */
   .article-adsense {
     max-width: var(--content-width);
-    margin: 2rem auto;
+    margin: 2.5rem auto;
   }
 
   /* ── Content ── */
   .article-content {
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem;
   }
 
-  /* ── Tags section ── */
-  .article-tags-section {
+  .article-newsletter-wrap {
     max-width: var(--content-width);
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border);
+    margin: 3.5rem auto;
   }
 
-  .article-tags-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text-secondary);
+  /* ── Related Section (Leia Também) ── */
+  .related-section {
+    max-width: var(--max-width);
+    margin: 4rem auto 0;
+    padding-top: 3rem;
+    border-top: 2px solid var(--color-text-primary);
+  }
+
+  .related-section__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .related-section__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
   }
 </style>

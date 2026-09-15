@@ -2,16 +2,18 @@
 /**
  * BaseLayout.astro
  * The root layout for every page in the blog.
- * Handles: SEO meta, hreflang, Open Graph, AdSense (async/non-blocking), fonts.
+ * Incorporates James Clear (typography & newsletter focus), Zen Habits (zen minimalism),
+ * and The Points Guy (clean card metadata & AdSense conversion optimization).
  */
+import type { SupportedLocale } from '../i18n/constants';
+import { SITE_NAME, SITE_URL } from '../i18n/constants';
+
 interface Props {
   title: string;
   description: string;
-  lang: string;
+  lang: SupportedLocale;
   image?: string;
-  /** Pass translationKey for article pages — enables hreflang generation */
   hreflangAlternates?: Array<{ hreflang: string; href: string }>;
-  /** Canonical URL for this page */
   canonicalUrl?: string;
 }
 
@@ -24,8 +26,6 @@ const {
   canonicalUrl,
 } = Astro.props;
 
-const SITE_NAME = 'TechFlow Blog';
-const SITE_URL = 'https://yourblog.com';
 const ogImage = image.startsWith('http') ? image : `${SITE_URL}${image}`;
 const canonical = canonicalUrl ?? Astro.url.href;
 ---
@@ -63,46 +63,47 @@ const canonical = canonicalUrl ?? Astro.url.href;
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Google Fonts: Inter — preconnect first to avoid render blocking -->
+    <!-- Google Fonts: Inter (Sans) + Newsreader (Editorial Serif for James Clear feel) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Critical CSS inline to avoid render blocking -->
+    <!-- Critical Design System Inline CSS -->
     <style>
       :root {
-        --color-bg: #ffffff;
-        --color-bg-secondary: #f8fafc;
+        /* Palette inspired by James Clear & Zen Habits (Warm, Serene, High-Contrast) */
+        --color-bg: #fbfbf9;
+        --color-bg-secondary: #f4f4f0;
         --color-bg-card: #ffffff;
-        --color-text-primary: #0f172a;
-        --color-text-secondary: #475569;
-        --color-text-muted: #94a3b8;
-        --color-accent: #6366f1;
-        --color-accent-hover: #4f46e5;
+        --color-text-primary: #18181b;
+        --color-text-secondary: #44403c;
+        --color-text-muted: #78716c;
+        --color-accent: #4f46e5;
+        --color-accent-hover: #4338ca;
         --color-accent-light: #eef2ff;
-        --color-border: #e2e8f0;
-        --color-border-subtle: #f1f5f9;
-        --color-success: #10b981;
-        --color-code-bg: #f1f5f9;
-        --color-code-text: #334155;
+        --color-border: #e7e5e4;
+        --color-border-subtle: #f5f5f4;
+        --color-code-bg: #f4f4f0;
+        
+        --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        --font-serif: 'Newsreader', Georgia, serif;
+        
+        --max-width: 1140px;
+        --content-width: 700px;
+        --header-height: 72px;
+
         --radius-sm: 6px;
         --radius-md: 10px;
         --radius-lg: 16px;
         --radius-xl: 24px;
-        --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07);
-        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
-        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
-        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
-        --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-        --font-mono: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
-        --max-width: 1200px;
-        --content-width: 740px;
-        --header-height: 68px;
+
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.06);
+        --shadow-lg: 0 12px 24px -4px rgb(0 0 0 / 0.08);
       }
 
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -113,7 +114,7 @@ const canonical = canonicalUrl ?? Astro.url.href;
         font-family: var(--font-sans);
         background-color: var(--color-bg);
         color: var(--color-text-primary);
-        line-height: 1.6;
+        line-height: 1.65;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -128,7 +129,7 @@ const canonical = canonicalUrl ?? Astro.url.href;
       a { color: var(--color-accent); text-decoration: none; transition: color 0.2s; }
       a:hover { color: var(--color-accent-hover); }
 
-      /* Prevent layout shift from AdSense slots */
+      /* AdSense Placeholder Styles */
       .adsense-slot {
         min-height: 90px;
         display: flex;
@@ -143,20 +144,6 @@ const canonical = canonicalUrl ?? Astro.url.href;
         letter-spacing: 0.1em;
       }
     </style>
-
-    <!--
-      Google AdSense Auto Ads
-      IMPORTANT: Load async + defer to NEVER block rendering (Core Web Vitals).
-      Replace "ca-pub-XXXXXXXXXX" with your publisher ID when you get it.
-      Currently commented out — uncomment when AdSense account is ready.
-    -->
-    <!--
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
-      crossorigin="anonymous"
-    ></script>
-    -->
   </head>
 
   <body>
@@ -166,116 +153,89 @@ const canonical = canonicalUrl ?? Astro.url.href;
     </main>
     <slot name="footer" />
 
-    <!-- Global styles loaded after paint — does not block LCP -->
+    <!-- Global Typography & Article Styles -->
     <style is:global>
-      /* Typography */
       h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-serif);
         font-weight: 700;
-        line-height: 1.25;
+        line-height: 1.2;
         color: var(--color-text-primary);
         letter-spacing: -0.02em;
       }
 
-      h1 { font-size: clamp(1.875rem, 4vw, 2.75rem); margin-bottom: 1rem; }
-      h2 { font-size: clamp(1.375rem, 3vw, 1.875rem); margin-bottom: 0.75rem; margin-top: 2.5rem; }
-      h3 { font-size: clamp(1.125rem, 2.5vw, 1.375rem); margin-bottom: 0.5rem; margin-top: 2rem; }
+      h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.25rem; }
+      h2 { font-size: clamp(1.5rem, 3vw, 2.125rem); margin-bottom: 1rem; margin-top: 2.75rem; }
+      h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); margin-bottom: 0.75rem; margin-top: 2.25rem; }
 
-      p { margin-bottom: 1.25rem; color: var(--color-text-secondary); line-height: 1.75; }
+      p { margin-bottom: 1.35rem; color: var(--color-text-secondary); font-size: 1.075rem; line-height: 1.8; }
 
-      /* Article prose styles */
+      /* Editorial Prose - James Clear & Zen Habits Reading Experience */
       .prose {
         max-width: var(--content-width);
         margin: 0 auto;
+        font-size: 1.1rem;
+        line-height: 1.85;
+      }
+
+      .prose p {
+        margin-bottom: 1.5rem;
+        color: #292524;
       }
 
       .prose ul, .prose ol {
-        margin-bottom: 1.25rem;
-        padding-left: 1.5rem;
-        color: var(--color-text-secondary);
-      }
-
-      .prose li { margin-bottom: 0.5rem; line-height: 1.7; }
-
-      .prose code {
-        font-family: var(--font-mono);
-        font-size: 0.875em;
-        background: var(--color-code-bg);
-        color: var(--color-accent);
-        padding: 0.15em 0.45em;
-        border-radius: 4px;
-        font-weight: 500;
-      }
-
-      .prose pre {
-        background: #0f172a;
-        color: #e2e8f0;
-        padding: 1.25rem 1.5rem;
-        border-radius: var(--radius-md);
-        overflow-x: auto;
         margin-bottom: 1.5rem;
-        border: 1px solid #1e293b;
-        font-family: var(--font-mono);
-        font-size: 0.875rem;
-        line-height: 1.7;
+        padding-left: 1.75rem;
+        color: #292524;
       }
 
-      .prose pre code {
-        background: none;
-        color: inherit;
-        padding: 0;
-        border-radius: 0;
-        font-weight: 400;
+      .prose li {
+        margin-bottom: 0.625rem;
+        line-height: 1.8;
       }
 
       .prose blockquote {
-        border-left: 4px solid var(--color-accent);
-        padding: 0.75rem 1.25rem;
-        background: var(--color-accent-light);
+        font-family: var(--font-serif);
+        font-size: 1.25rem;
+        line-height: 1.6;
+        border-left: 3px solid var(--color-accent);
+        padding: 0.75rem 1.5rem;
+        margin: 2rem 0;
+        color: #44403c;
+        background: #f4f4f0;
         border-radius: 0 var(--radius-md) var(--radius-md) 0;
-        margin: 1.5rem 0;
-        color: var(--color-text-secondary);
         font-style: italic;
       }
 
       .prose hr {
         border: none;
         border-top: 1px solid var(--color-border);
-        margin: 2.5rem 0;
+        margin: 3rem 0;
       }
 
       .prose a {
         color: var(--color-accent);
         text-decoration: underline;
         text-underline-offset: 3px;
+        font-weight: 500;
       }
 
       .prose img {
         border-radius: var(--radius-lg);
-        margin: 2rem auto;
-        box-shadow: var(--shadow-lg);
+        margin: 2.5rem auto;
+        box-shadow: var(--shadow-md);
       }
 
-      /* Utility */
+      /* Container Utility */
       .container {
         max-width: var(--max-width);
         margin: 0 auto;
         padding: 0 1.5rem;
       }
 
-      .visually-hidden {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-        clip: rect(0,0,0,0);
-        white-space: nowrap;
-      }
-
-      /* Focus styles for accessibility */
       :focus-visible {
         outline: 2px solid var(--color-accent);
         outline-offset: 3px;
-        border-radius: 3px;
+        border-radius: 4px;
       }
     </style>
   </body>

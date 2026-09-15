@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://yourblog.com',
+  site: 'https://techflow.vercel.app',
   output: 'static',
   integrations: [
     sitemap({

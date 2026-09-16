@@ -7,6 +7,7 @@ import { formatDate, useTranslations } from '../i18n/utils';
 import type { SupportedLocale } from '../i18n/constants';
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
+import { slugifyAuthor } from '../pages/[lang]/autor/[slug].astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -20,6 +21,7 @@ const formattedDate = formatDate(post.data.date, lang);
 // Calculate estimated reading time
 const wordCount = post.body ? post.body.split(/\s+/).length : 800;
 const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
+const authorSlug = slugifyAuthor(post.data.author);
 ---
 
 <article class="card">
@@ -70,7 +72,9 @@ const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
           {readTimeMinutes} min
         </span>
       </div>
-      <span class="card__author">{t('article.by')} {post.data.author}</span>
+      <a href={`/${lang}/autor/${authorSlug}/`} class="card__author">
+        {t('article.by')} {post.data.author}
+      </a>
     </div>
 
     <a href={`/${lang}/${post.data.slug}/`} class="card__cta" aria-label={`${t('article.readmore')} - ${post.data.title}`}>
@@ -209,10 +213,18 @@ const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
   }
 
   .card__author {
-    font-weight: 400;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  .card__author:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
   }
 
   .card__cta {

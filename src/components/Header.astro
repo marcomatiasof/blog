@@ -4,6 +4,7 @@
  * Site-wide header with logo, main navigation, clean "Categorias ▾" dropdown menu, and language picker.
  */
 import LanguagePicker from './LanguagePicker.astro';
+import BreakingNewsTicker from './BreakingNewsTicker.astro';
 import { useTranslations } from '../i18n/utils';
 import type { SupportedLocale } from '../i18n/constants';
 
@@ -27,6 +28,8 @@ const categories = [
   { key: 'nav.concursos', slug: 'concursos' },
 ] as const;
 ---
+
+<BreakingNewsTicker lang={lang} />
 
 <header class="header" id="site-header">
   <div class="header__inner container">

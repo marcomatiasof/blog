@@ -11,6 +11,7 @@ import NewsletterBox from '../../components/NewsletterBox.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import ReadingProgressBar from '../../components/ReadingProgressBar.astro';
 import NotificationToast from '../../components/NotificationToast.astro';
+import NewsArticleSchema from '../../components/NewsArticleSchema.astro';
 import { getCollection, render } from 'astro:content';
 import { useTranslations, getHreflangAlternates, formatDate } from '../../i18n/utils';
 import { SUPPORTED_LOCALES, SITE_URL, LOCALE_NAMES, LOCALE_FLAGS, type SupportedLocale } from '../../i18n/constants';
@@ -69,6 +70,7 @@ const relatedPosts = allPosts
   author={post.data.author}
   articleDate={post.data.date}
 >
+  <NewsArticleSchema post={post} canonicalUrl={canonicalUrl} />
   <ReadingProgressBar />
   <Header slot="header" lang={lang} translationKey={post.data.translationKey} />
   <NotificationToast lang={lang} />

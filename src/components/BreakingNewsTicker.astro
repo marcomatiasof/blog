@@ -1,0 +1,120 @@
+---
+/**
+ * BreakingNewsTicker.astro
+ * High-impact breaking news alert ticker for urgent stories.
+ */
+import { getCollection } from 'astro:content';
+import { useTranslations } from '../i18n/utils';
+import type { SupportedLocale } from '../i18n/constants';
+
+interface Props {
+  lang: SupportedLocale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Fetch breaking news articles for the current locale
+const breakingPosts = await getCollection('blog', (post) => {
+  return post.data.locale === lang && !post.data.draft && post.data.isBreaking;
+});
+
+breakingPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const latestBreaking = breakingPosts.length > 0 ? breakingPosts[0] : null;
+
+const breakingLabel = {
+  pt: '🔴 URGENTE',
+  en: '🔴 BREAKING NEWS',
+  es: '🔴 ÚLTIMA HORA',
+}[lang];
+---
+
+{latestBreaking && (
+  <aside class="breaking-ticker" aria-label={breakingLabel}>
+    <div class="container breaking-ticker__inner">
+      <div class="breaking-ticker__badge">
+        <span class="breaking-ticker__pulse"></span>
+        <span>{breakingLabel}</span>
+      </div>
+      <a href={`/${lang}/${latestBreaking.data.slug}/`} class="breaking-ticker__link">
+        <span class="breaking-ticker__title">{latestBreaking.data.title}</span>
+        {latestBreaking.data.subtitle && (
+          <span class="breaking-ticker__subtitle">— {latestBreaking.data.subtitle}</span>
+        )}
+      </a>
+      <span class="breaking-ticker__arrow" aria-hidden="true">→</span>
+    </div>
+  </aside>
+)}
+
+<style>
+  .breaking-ticker {
+    background: #111827;
+    color: #ffffff;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    border-bottom: 2px solid #ef4444;
+  }
+
+  .breaking-ticker__inner {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .breaking-ticker__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.725rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.625rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .breaking-ticker__pulse {
+    width: 6px;
+    height: 6px;
+    background: #ffffff;
+    border-radius: 50%;
+    animation: pulse 1.2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.4); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+  }
+
+  .breaking-ticker__link {
+    color: #f3f4f6;
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    transition: color 0.2s;
+  }
+
+  .breaking-ticker__link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  .breaking-ticker__subtitle {
+    color: #9ca3af;
+    font-weight: 400;
+    margin-left: 0.375rem;
+  }
+
+  .breaking-ticker__arrow {
+    color: #ef4444;
+    font-weight: 700;
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+/**
+ * NewsArticleSchema.astro
+ * Injects Google News & Search compliant schema.org/NewsArticle JSON-LD structured data.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { SITE_URL } from '../i18n/constants';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  canonicalUrl: string;
+}
+
+const { post, canonicalUrl } = Astro.props;
+
+const schemaData = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  'mainEntityOfPage': {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+  'headline': post.data.title,
+  'description': post.data.description,
+  'image': post.data.image ? [`${SITE_URL}${post.data.image.src}`] : undefined,
+  'datePublished': post.data.date.toISOString(),
+  'dateModified': (post.data.updatedDate || post.data.date).toISOString(),
+  'author': [
+    {
+      '@type': 'Person',
+      'name': post.data.author,
+      'jobTitle': post.data.authorRole || 'Journalist',
+    },
+  ],
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'TechFlow News',
+    'url': SITE_URL,
+    'logo': {
+      '@type': 'ImageObject',
+      'url': `${SITE_URL}/favicon.svg`,
+    },
+  },
+  'isAccessibleForFree': true,
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schemaData)} />

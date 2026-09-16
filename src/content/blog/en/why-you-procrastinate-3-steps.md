@@ -5,7 +5,7 @@ date: 2026-09-15
 locale: "en"
 slug: "why-you-procrastinate-3-step-method"
 translationKey: "why-you-procrastinate-3-steps"
-image: "/images/procrastination-guide.jpg"
+image: "../../../assets/images/procrastination-guide.jpg"
 author: "TechFlow Team"
 tags: ["productivity", "self-knowledge", "habits", "focus"]
 draft: false

@@ -5,7 +5,7 @@ date: 2026-09-15
 locale: "en"
 slug: "productive-morning-routine-no-5am"
 translationKey: "productive-morning-routine-no-5am"
-image: "/images/morning-routine-guide.jpg"
+image: "../../../assets/images/morning-routine-guide.jpg"
 author: "TechFlow Team"
 tags: ["productivity", "routine", "habits", "wellbeing"]
 draft: false

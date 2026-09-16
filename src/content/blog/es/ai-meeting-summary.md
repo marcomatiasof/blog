@@ -5,7 +5,7 @@ date: "2026-09-15"
 locale: "es"
 slug: "mejor-herramienta-ia-resumir-reuniones"
 translationKey: "ai-meeting-summary"
-image: "/images/ai-meeting-summary.jpg"
+image: "../../../assets/images/ai-meeting-summary.jpg"
 category: "Ferramentas de IA"
 tags: ["ai-tools", "meeting-notes", "productivity"]
 og_title: "Cómo Automatizar tus Notas de Reunión con IA en 2026"

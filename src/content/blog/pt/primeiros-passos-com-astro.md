@@ -7,7 +7,7 @@ slug: primeiros-passos-com-astro
 translationKey: getting-started-astro
 author: TechFlow Team
 tags: [astro, desenvolvimento web, performance, sites estáticos]
-image: /images/getting-started-astro.jpg
+image: "../../../assets/images/getting-started-astro.jpg"
 ---
 
 # Primeiros Passos com Astro: Construa Sites Mais Rápidos

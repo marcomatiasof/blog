@@ -7,7 +7,7 @@ slug: getting-started-with-astro
 translationKey: getting-started-astro
 author: TechFlow Team
 tags: [astro, web development, performance, static sites]
-image: /images/getting-started-astro.jpg
+image: "../../../assets/images/getting-started-astro.jpg"
 ---
 
 # Getting Started with Astro: Build Faster Websites

@@ -5,7 +5,7 @@ date: 2026-09-15
 locale: "es"
 slug: "la-regla-de-los-2-minutos-habitos"
 translationKey: "the-2-minute-rule-habits"
-image: "/images/two-minute-rule-guide.jpg"
+image: "../../../assets/images/two-minute-rule-guide.jpg"
 author: "TechFlow Team"
 tags: ["productividad", "habitos", "autoconocimiento", "enfoque"]
 draft: false

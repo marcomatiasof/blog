@@ -5,7 +5,7 @@ date: 2026-09-15
 locale: "es"
 slug: "por-que-procrastinas-metodo-3-pasos"
 translationKey: "why-you-procrastinate-3-steps"
-image: "/images/procrastination-guide.jpg"
+image: "../../../assets/images/procrastination-guide.jpg"
 author: "TechFlow Team"
 tags: ["productividad", "autoconocimiento", "habitos", "enfoque"]
 draft: false

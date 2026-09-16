@@ -5,7 +5,7 @@ date: 2026-09-15
 locale: "pt"
 slug: "rotina-matinal-produtiva-sem-acordar-5h"
 translationKey: "productive-morning-routine-no-5am"
-image: "/images/morning-routine-guide.jpg"
+image: "../../../assets/images/morning-routine-guide.jpg"
 author: "TechFlow Team"
 tags: ["produtividade", "rotina", "habitos", "bem-estar"]
 draft: false

@@ -5,7 +5,7 @@ date: 2026-09-15
 locale: "en"
 slug: "the-2-minute-rule-habits"
 translationKey: "the-2-minute-rule-habits"
-image: "/images/two-minute-rule-guide.jpg"
+image: "../../../assets/images/two-minute-rule-guide.jpg"
 author: "TechFlow Team"
 tags: ["productivity", "habits", "self-knowledge", "focus"]
 draft: false

@@ -5,7 +5,7 @@ date: 2026-09-15
 locale: "en"
 slug: "organize-week-with-ai-chatgpt-claude"
 translationKey: "organize-week-with-ai-chatgpt-claude"
-image: "/images/ai-weekly-planning-guide.jpg"
+image: "../../../assets/images/ai-weekly-planning-guide.jpg"
 author: "TechFlow Team"
 tags: ["artificial intelligence", "productivity", "planning", "routine"]
 draft: false

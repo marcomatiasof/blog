@@ -6,6 +6,7 @@
 import { formatDate, useTranslations } from '../i18n/utils';
 import type { SupportedLocale } from '../i18n/constants';
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -21,14 +22,14 @@ const formattedDate = formatDate(post.data.date, lang);
   {post.data.image && (
     <a href={`/${lang}/${post.data.slug}/`} class="card__image-link" tabindex="-1" aria-hidden="true">
       <div class="card__image-wrapper">
-        <img
+        <Image
           src={post.data.image}
           alt={post.data.title}
           loading="lazy"
           decoding="async"
           class="card__image"
-          width="640"
-          height="360"
+          width={640}
+          height={360}
         />
       </div>
     </a>
@@ -58,7 +59,7 @@ const formattedDate = formatDate(post.data.date, lang);
       <span class="card__author">{t('article.by')} {post.data.author}</span>
     </div>
 
-    <a href={`/${lang}/${post.data.slug}/`} class="card__cta">
+    <a href={`/${lang}/${post.data.slug}/`} class="card__cta" aria-label={`${t('article.readmore')} - ${post.data.title}`}>
       {t('article.readmore')}
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

@@ -1,6 +1,6 @@
 export const SITE_NAME = 'TechFlow';
-export const SITE_URL = 'https://techflow.vercel.app';
-export const SITE_DESCRIPTION = 'Technology and productivity insights for modern developers';
+export const SITE_URL = 'https://www.techflow.blog';
+export const SITE_DESCRIPTION = 'Notícias, análises e tendências em política, economia, esportes, viagens e tecnologia.';
 export const SUPPORTED_LOCALES = ['en', 'pt', 'es'] as const;
 export const DEFAULT_LOCALE = 'en' as const;
 

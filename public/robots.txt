@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://techflow.vercel.app/sitemap-index.xml
+Sitemap: https://www.techflow.blog/sitemap-index.xml
+Sitemap: https://www.techflow.blog/news-sitemap.xml

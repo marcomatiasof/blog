@@ -1,10 +1,10 @@
 ---
 /**
  * Header.astro
- * Site-wide header with logo, navigation, and language picker.
+ * Site-wide header with logo, main navigation, horizontal category strip, and language picker.
  */
 import LanguagePicker from './LanguagePicker.astro';
-import { useTranslations, getLangFromUrl } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
 import type { SupportedLocale } from '../i18n/constants';
 
 interface Props {
@@ -14,43 +14,87 @@ interface Props {
 
 const { lang, translationKey } = Astro.props;
 const t = useTranslations(lang);
+
+const categories = [
+  { key: 'nav.politica', slug: 'politica', icon: '🏛️' },
+  { key: 'nav.economia', slug: 'economia', icon: '📈' },
+  { key: 'nav.futebol', slug: 'futebol', icon: '⚽' },
+  { key: 'nav.mundo', slug: 'mundo', icon: '🌐' },
+  { key: 'nav.eventos', slug: 'eventos', icon: '📅' },
+  { key: 'nav.fofocas', slug: 'fofocas', icon: '💬' },
+  { key: 'nav.viagens', slug: 'viagens', icon: '✈️' },
+  { key: 'nav.milhas', slug: 'milhas', icon: '💳' },
+  { key: 'nav.concursos', slug: 'concursos', icon: '📝' },
+] as const;
 ---
 
 <header class="header" id="site-header">
-  <div class="header__inner container">
-    <!-- Logo -->
-    <a href={`/${lang}/`} class="header__logo" aria-label="TechFlow Blog — Home">
-      <svg class="header__logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="var(--color-accent)"/>
-        <path d="M8 16H24M16 8L24 16L16 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="header__logo-text">TechFlow</span>
-    </a>
+  <!-- Top Bar -->
+  <div class="header__top">
+    <div class="header__inner container">
+      <!-- Logo -->
+      <a href={`/${lang}/`} class="header__logo" aria-label="TechFlow Blog — Home">
+        <svg class="header__logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="var(--color-accent)"/>
+          <path d="M8 16H24M16 8L24 16L16 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="header__logo-text">TechFlow</span>
+      </a>
 
-    <!-- Navigation -->
-    <nav class="header__nav" aria-label="Main navigation">
-      <a href={`/${lang}/`} class="header__nav-link">{t('nav.home')}</a>
-      <a href={`/${lang}/`} class="header__nav-link">{t('nav.articles')}</a>
-    </nav>
+      <!-- Primary Navigation -->
+      <nav class="header__nav" aria-label="Main navigation">
+        <a href={`/${lang}/`} class="header__nav-link">{t('nav.home')}</a>
+        <a href={`/${lang}/#articles`} class="header__nav-link">{t('nav.articles')}</a>
+      </nav>
 
-    <!-- Right side: language picker -->
-    <div class="header__actions">
-      <LanguagePicker currentLang={lang} translationKey={translationKey} />
+      <!-- Right side: language picker -->
+      <div class="header__actions">
+        <LanguagePicker currentLang={lang} translationKey={translationKey} />
+      </div>
+
+      <!-- Mobile menu button -->
+      <button class="header__mobile-menu-btn" aria-label="Open menu" aria-expanded="false" id="mobile-menu-btn">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+          <path d="M3 6H19M3 11H19M3 16H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <!-- Mobile menu button -->
-    <button class="header__mobile-menu-btn" aria-label="Open menu" aria-expanded="false" id="mobile-menu-btn">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-        <path d="M3 6H19M3 11H19M3 16H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </button>
+  <!-- Horizontal Categories Sub-Bar -->
+  <div class="header__categories-bar">
+    <div class="container header__categories-container">
+      <nav class="header__categories-nav" aria-label="Category navigation">
+        {categories.map((cat) => (
+          <a href={`/${lang}/categoria/${cat.slug}/`} class="header__category-chip">
+            <span class="header__category-icon" aria-hidden="true">{cat.icon}</span>
+            <span>{t(cat.key as any)}</span>
+          </a>
+        ))}
+      </nav>
+    </div>
   </div>
 
   <!-- Mobile nav overlay -->
   <div class="header__mobile-nav" id="mobile-nav" hidden>
     <nav aria-label="Mobile navigation">
-      <a href={`/${lang}/`} class="header__mobile-link">{t('nav.home')}</a>
-      <a href={`/${lang}/`} class="header__mobile-link">{t('nav.articles')}</a>
+      <div class="header__mobile-section">
+        <a href={`/${lang}/`} class="header__mobile-link">{t('nav.home')}</a>
+        <a href={`/${lang}/#articles`} class="header__mobile-link">{t('nav.articles')}</a>
+      </div>
+
+      <div class="header__mobile-section">
+        <span class="header__mobile-heading">{t('nav.categories')}</span>
+        <div class="header__mobile-categories">
+          {categories.map((cat) => (
+            <a href={`/${lang}/categoria/${cat.slug}/`} class="header__mobile-cat-item">
+              <span class="header__mobile-cat-icon">{cat.icon}</span>
+              <span>{t(cat.key as any)}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
       <div class="header__mobile-lang">
         <LanguagePicker currentLang={lang} translationKey={translationKey} />
       </div>
@@ -63,13 +107,17 @@ const t = useTranslations(lang);
     position: sticky;
     top: 0;
     z-index: 50;
-    height: var(--header-height);
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .header__top {
+    height: var(--header-height);
     display: flex;
     align-items: center;
+    border-bottom: 1px solid var(--color-border-subtle);
   }
 
   .header__inner {
@@ -127,6 +175,59 @@ const t = useTranslations(lang);
     margin-left: auto;
   }
 
+  /* ── Categories Bar ── */
+  .header__categories-bar {
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding: 0.4rem 0;
+  }
+
+  .header__categories-container {
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  .header__categories-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .header__categories-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    min-width: max-content;
+  }
+
+  .header__category-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .header__category-chip:hover {
+    background: var(--color-accent);
+    color: #ffffff;
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+  }
+
+  .header__category-icon {
+    font-size: 0.875rem;
+  }
+
+  /* ── Mobile Nav ── */
   .header__mobile-menu-btn {
     display: none;
     background: none;
@@ -144,14 +245,16 @@ const t = useTranslations(lang);
 
   .header__mobile-nav {
     position: absolute;
-    top: var(--header-height);
+    top: 100%;
     left: 0;
     right: 0;
     background: var(--color-bg-card);
     border-bottom: 1px solid var(--color-border);
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.5rem;
     box-shadow: var(--shadow-lg);
     animation: slideDown 0.2s ease-out;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
   }
 
   @keyframes slideDown {
@@ -159,12 +262,16 @@ const t = useTranslations(lang);
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  .header__mobile-section {
+    margin-bottom: 1.25rem;
+  }
+
   .header__mobile-link {
     display: block;
-    padding: 0.75rem 0;
+    padding: 0.625rem 0;
     color: var(--color-text-primary);
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     border-bottom: 1px solid var(--color-border-subtle);
     transition: color 0.2s;
@@ -174,8 +281,48 @@ const t = useTranslations(lang);
     color: var(--color-accent);
   }
 
+  .header__mobile-heading {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .header__mobile-categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .header__mobile-cat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .header__mobile-cat-item:hover {
+    background: var(--color-border);
+    color: var(--color-accent);
+  }
+
+  .header__mobile-cat-icon {
+    font-size: 1rem;
+  }
+
   .header__mobile-lang {
     padding-top: 1rem;
+    border-top: 1px solid var(--color-border-subtle);
   }
 
   @media (max-width: 640px) {
@@ -188,7 +335,7 @@ const t = useTranslations(lang);
       margin-left: auto;
     }
     .header {
-      position: relative;
+      position: sticky;
     }
   }
 </style>
@@ -210,3 +357,4 @@ const t = useTranslations(lang);
     });
   }
 </script>
+

@@ -1,0 +1,196 @@
+---
+/**
+ * src/pages/[lang]/categoria/[category].astro
+ * Category archive page displaying articles tagged with the selected category.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import NewsletterBox from '../../../components/NewsletterBox.astro';
+import { getCollection } from 'astro:content';
+import { useTranslations } from '../../../i18n/utils';
+import { SUPPORTED_LOCALES, SITE_URL, type SupportedLocale } from '../../../i18n/constants';
+
+export const CATEGORIES = [
+  { slug: 'politica', key: 'nav.politica', icon: '🏛️' },
+  { slug: 'economia', key: 'nav.economia', icon: '📈' },
+  { slug: 'futebol', key: 'nav.futebol', icon: '⚽' },
+  { slug: 'mundo', key: 'nav.mundo', icon: '🌐' },
+  { slug: 'eventos', key: 'nav.eventos', icon: '📅' },
+  { slug: 'fofocas', key: 'nav.fofocas', icon: '💬' },
+  { slug: 'viagens', key: 'nav.viagens', icon: '✈️' },
+  { slug: 'milhas', key: 'nav.milhas', icon: '💳' },
+  { slug: 'concursos', key: 'nav.concursos', icon: '📝' },
+] as const;
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of SUPPORTED_LOCALES) {
+    for (const cat of CATEGORIES) {
+      paths.push({
+        params: { lang, category: cat.slug },
+      });
+    }
+  }
+  return paths;
+}
+
+const { lang, category } = Astro.params as { lang: SupportedLocale; category: string };
+const t = useTranslations(lang);
+
+const catObj = CATEGORIES.find((c) => c.slug === category);
+const catName = catObj ? t(catObj.key as any) : category;
+const catIcon = catObj ? catObj.icon : '🏷️';
+
+// Fetch articles matching locale and category tag (case-insensitive search)
+const allPosts = await getCollection('blog', (post) => {
+  if (post.data.locale !== lang || post.data.draft) return false;
+  const tags = (post.data.tags || []).map((tag) => tag.toLowerCase());
+  return tags.includes(category.toLowerCase()) || tags.includes(catName.toLowerCase());
+});
+
+allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Hreflang alternates for category page
+const hreflangAlternates = SUPPORTED_LOCALES.map((locale) => ({
+  hreflang: locale,
+  href: `${SITE_URL}/${locale}/categoria/${category}/`,
+}));
+---
+
+<BaseLayout
+  title={`${catName} — TechFlow`}
+  description={`Confira todas as novidades, guias e artigos sobre ${catName}.`}
+  lang={lang}
+  hreflangAlternates={hreflangAlternates}
+  canonicalUrl={`${SITE_URL}/${lang}/categoria/${category}/`}
+>
+  <Header slot="header" lang={lang} />
+
+  <!-- Category Hero -->
+  <section class="category-hero">
+    <div class="container">
+      <div class="category-hero__header">
+        <span class="category-hero__icon">{catIcon}</span>
+        <h1 class="category-hero__title">{catName}</h1>
+        <p class="category-hero__count">
+          {allPosts.length} {allPosts.length === 1 ? 'artigo disponível' : 'artigos disponíveis'}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Articles Grid -->
+  <section class="category-articles">
+    <div class="container">
+      {allPosts.length > 0 ? (
+        <div class="category-articles__grid">
+          {allPosts.map((post) => (
+            <ArticleCard post={post} lang={lang} />
+          ))}
+        </div>
+      ) : (
+        <div class="category-empty">
+          <p class="category-empty__text">
+            Ainda não há artigos publicados nesta categoria ({catName}).
+          </p>
+          <a href={`/${lang}/`} class="category-empty__btn">
+            Voltar para o Início
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="category-newsletter">
+    <div class="container">
+      <NewsletterBox lang={lang} variant="card" />
+    </div>
+  </section>
+
+  <Footer slot="footer" lang={lang} />
+</BaseLayout>
+
+<style>
+  .category-hero {
+    padding: 3rem 0 2.5rem;
+    background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .category-hero__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .category-hero__icon {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .category-hero__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  .category-hero__count {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .category-articles {
+    padding: 3.5rem 0;
+  }
+
+  .category-articles__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .category-empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .category-empty__text {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .category-empty__btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: white;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .category-empty__btn:hover {
+    opacity: 0.9;
+  }
+
+  .category-newsletter {
+    padding: 2rem 0 4rem;
+  }
+</style>

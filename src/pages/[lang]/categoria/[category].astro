@@ -13,15 +13,15 @@ import { useTranslations } from '../../../i18n/utils';
 import { SUPPORTED_LOCALES, SITE_URL, type SupportedLocale } from '../../../i18n/constants';
 
 export const CATEGORIES = [
-  { slug: 'politica', key: 'nav.politica', icon: '🏛️' },
-  { slug: 'economia', key: 'nav.economia', icon: '📈' },
-  { slug: 'futebol', key: 'nav.futebol', icon: '⚽' },
-  { slug: 'mundo', key: 'nav.mundo', icon: '🌐' },
-  { slug: 'eventos', key: 'nav.eventos', icon: '📅' },
-  { slug: 'fofocas', key: 'nav.fofocas', icon: '💬' },
-  { slug: 'viagens', key: 'nav.viagens', icon: '✈️' },
-  { slug: 'milhas', key: 'nav.milhas', icon: '💳' },
-  { slug: 'concursos', key: 'nav.concursos', icon: '📝' },
+  { slug: 'politica', key: 'nav.politica' },
+  { slug: 'economia', key: 'nav.economia' },
+  { slug: 'futebol', key: 'nav.futebol' },
+  { slug: 'mundo', key: 'nav.mundo' },
+  { slug: 'eventos', key: 'nav.eventos' },
+  { slug: 'fofocas', key: 'nav.fofocas' },
+  { slug: 'viagens', key: 'nav.viagens' },
+  { slug: 'milhas', key: 'nav.milhas' },
+  { slug: 'concursos', key: 'nav.concursos' },
 ] as const;
 
 export async function getStaticPaths() {
@@ -41,7 +41,6 @@ const t = useTranslations(lang);
 
 const catObj = CATEGORIES.find((c) => c.slug === category);
 const catName = catObj ? t(catObj.key as any) : category;
-const catIcon = catObj ? catObj.icon : '🏷️';
 
 // Fetch articles matching locale and category tag (case-insensitive search)
 const allPosts = await getCollection('blog', (post) => {
@@ -72,7 +71,6 @@ const hreflangAlternates = SUPPORTED_LOCALES.map((locale) => ({
   <section class="category-hero">
     <div class="container">
       <div class="category-hero__header">
-        <span class="category-hero__icon">{catIcon}</span>
         <h1 class="category-hero__title">{catName}</h1>
         <p class="category-hero__count">
           {allPosts.length} {allPosts.length === 1 ? 'artigo disponível' : 'artigos disponíveis'}
@@ -126,11 +124,6 @@ const hreflangAlternates = SUPPORTED_LOCALES.map((locale) => ({
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
-  }
-
-  .category-hero__icon {
-    font-size: 3rem;
-    line-height: 1;
   }
 
   .category-hero__title {

@@ -24,4 +24,7 @@ export default defineConfig({
       prefixDefaultLocale: true,
     },
   },
+  build: {
+    inlineStylesheets: 'always'
+  }
 });

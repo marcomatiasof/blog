@@ -1,0 +1,126 @@
+---
+/**
+ * src/pages/[lang]/sobre.astro
+ * Institutional "About Us" page for E-E-A-T and Google AdSense compliance.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import NewsletterBox from '../../components/NewsletterBox.astro';
+import { useTranslations } from '../../i18n/utils';
+import { SUPPORTED_LOCALES, SITE_URL, type SupportedLocale } from '../../i18n/constants';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLocale };
+const t = useTranslations(lang);
+
+const hreflangAlternates = SUPPORTED_LOCALES.map((locale) => ({
+  hreflang: locale,
+  href: `${SITE_URL}/${locale}/sobre/`,
+}));
+
+const content = {
+  pt: {
+    title: 'Sobre o TechFlow',
+    subtitle: 'Jornalismo independente, análises aprofundadas e cobertura em tempo real.',
+    missionTitle: 'Nossa Missão Editorial',
+    missionText: `O TechFlow é um portal de notícias e veículo de imprensa independente dedicado a oferecer cobertura jornalística precisa, ágil e aprofundada. Cobrimos diariamente temas cruciais que impactam a sociedade, incluindo Política, Economia, Futebol, Notícias Mundiais, Viagens, Milhas Aéreas e Concursos Públicos.`,
+    valuesTitle: 'Compromisso com a Verdade e Rigor Editorial',
+    valuesText: `Nossa equipe editorial atua sob rigorosos padrões de verificação de fatos, independência e transparência. Todas as matérias passam por revisão jornalística antes da publicação para garantir dados confiáveis e isenção de conflitos de interesse.`,
+    teamTitle: 'Corpo Editorial e Colaboradores',
+    teamText: `Contamos com jornalistas, analistas e colunistas especializados em cada editoria, unindo rigor de apuração e clareza na linguagem para levar informação de alto valor aos nossos leitores.`,
+  },
+  en: {
+    title: 'About TechFlow',
+    subtitle: 'Independent journalism, in-depth analysis, and real-time coverage.',
+    missionTitle: 'Our Editorial Mission',
+    missionText: `TechFlow is an independent news portal and media organization dedicated to providing accurate, fast, and comprehensive reporting. We cover key daily topics shaping society, including Politics, Economy, Sports, World News, Travel, Air Miles, and Public Examinations.`,
+    valuesTitle: 'Commitment to Fact-Checking and Editorial Standards',
+    valuesText: `Our newsroom adheres to strict fact-checking standards, independence, and transparency. Every story undergoes thorough editorial review before publication to ensure accuracy and impartiality.`,
+    teamTitle: 'Editorial Team',
+    teamText: `Our team brings together experienced journalists and specialized analysts across all desks, delivering clear, reliable, and high-impact news coverage to our readers.`,
+  },
+  es: {
+    title: 'Sobre TechFlow',
+    subtitle: 'Periodismo independiente, análisis profundos y cobertura en tiempo real.',
+    missionTitle: 'Nuestra Misión Editorial',
+    missionText: `TechFlow es un portal de noticias independiente dedicado a brindar información precisa, rápida y profunda. Cubrimos a diario temas clave como Política, Economía, Deportes, Noticias Mundiales, Viajes y Concursos.`,
+    valuesTitle: 'Compromiso con la Veracidad',
+    valuesText: `Nuestro equipo trabaja bajo rigurosos estándares de verificación de datos y transparencia editorial para garantizar información confiable a todos nuestros lectores.`,
+    teamTitle: 'Equipo Editorial',
+    teamText: `Contamos con periodistas y analistas especializados en cada área para llevar noticias claras y de alto valor a la audiencia.`,
+  },
+}[lang];
+---
+
+<BaseLayout
+  title={`${content.title} — TechFlow`}
+  description={content.subtitle}
+  lang={lang}
+  hreflangAlternates={hreflangAlternates}
+  canonicalUrl={`${SITE_URL}/${lang}/sobre/`}
+>
+  <Header slot="header" lang={lang} />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-title">{content.title}</h1>
+      <p class="page-subtitle">{content.subtitle}</p>
+    </div>
+  </section>
+
+  <section class="page-content container">
+    <div class="prose">
+      <h2>{content.missionTitle}</h2>
+      <p>{content.missionText}</p>
+
+      <h2>{content.valuesTitle}</h2>
+      <p>{content.valuesText}</p>
+
+      <h2>{content.teamTitle}</h2>
+      <p>{content.teamText}</p>
+    </div>
+  </section>
+
+  <section class="bottom-newsletter container">
+    <NewsletterBox lang={lang} variant="card" />
+  </section>
+
+  <Footer slot="footer" lang={lang} />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 4rem 0 2.5rem;
+    background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.25rem, 4vw, 3.25rem);
+    font-weight: 800;
+    margin: 0 0 1rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.15rem;
+    color: var(--color-text-secondary);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .page-content {
+    padding: 4rem 1.5rem;
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .bottom-newsletter {
+    padding: 2rem 0 4rem;
+  }
+</style>

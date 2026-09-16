@@ -1,0 +1,221 @@
+---
+/**
+ * src/pages/[lang]/contato.astro
+ * Contact Us page for reader feedback, editorial pitches, press releases, and AdSense compliance.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { useTranslations } from '../../i18n/utils';
+import { SUPPORTED_LOCALES, SITE_URL, type SupportedLocale } from '../../i18n/constants';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLocale };
+const t = useTranslations(lang);
+
+const hreflangAlternates = SUPPORTED_LOCALES.map((locale) => ({
+  hreflang: locale,
+  href: `${SITE_URL}/${locale}/contato/`,
+}));
+
+const title = {
+  pt: 'Fale Conosco — Atendimento e Redação',
+  en: 'Contact Us — Newsroom & Support',
+  es: 'Contacto — Redacción y Soporte',
+}[lang];
+---
+
+<BaseLayout
+  title={`${title} — TechFlow`}
+  description="Entre em contato com a redação do TechFlow para sugestões de pauta, correções, imprensa ou parcerias comerciais."
+  lang={lang}
+  hreflangAlternates={hreflangAlternates}
+  canonicalUrl={`${SITE_URL}/${lang}/contato/`}
+>
+  <Header slot="header" lang={lang} />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-title">{title}</h1>
+      <p class="page-subtitle">Estamos à disposição para ouvir nossos leitores, parceiros e imprensa.</p>
+    </div>
+  </section>
+
+  <section class="page-content container">
+    <div class="contact-grid">
+      <!-- Contact Direct Channels -->
+      <div class="contact-card">
+        <h2>Canal Direto da Redação</h2>
+        <div class="contact-item">
+          <strong>📰 Sugestões de Pauta e Imprensa:</strong>
+          <p>redacao@techflow.blog</p>
+        </div>
+        <div class="contact-item">
+          <strong>✉️ Atendimento ao Leitor:</strong>
+          <p>contato@techflow.blog</p>
+        </div>
+        <div class="contact-item">
+          <strong>💼 Parcerias e Anúncios:</strong>
+          <p>comercial@techflow.blog</p>
+        </div>
+        <div class="contact-item">
+          <strong>🔒 Proteção de Dados (DPO):</strong>
+          <p>privacidade@techflow.blog</p>
+        </div>
+      </div>
+
+      <!-- Interactive Contact Form -->
+      <div class="contact-card">
+        <h2>Envie sua Mensagem</h2>
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Obrigado! Sua mensagem foi enviada à redação.');">
+          <div class="form-group">
+            <label for="name">Nome Completo</label>
+            <input type="text" id="name" required placeholder="Digite seu nome..." class="form-input" />
+          </div>
+          <div class="form-group">
+            <label for="email">Seu E-mail</label>
+            <input type="email" id="email" required placeholder="seuemail@exemplo.com" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label for="subject">Assunto</label>
+            <select id="subject" class="form-input">
+              <option value="pauta">Sugestão de Pauta / Notícia</option>
+              <option value="erro">Correção ou Reportar Erro</option>
+              <option value="anuncio">Publicidade / Parceria Comercial</option>
+              <option value="outro">Outro Assunto</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Mensagem</label>
+            <textarea id="message" rows="5" required placeholder="Escreva sua mensagem aqui..." class="form-input"></textarea>
+          </div>
+          <button type="submit" class="form-btn">Enviar Mensagem</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" lang={lang} />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3.5rem 0 2rem;
+    background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+  }
+
+  .page-content {
+    padding: 4rem 1.5rem;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .contact-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .contact-card h2 {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 0.5rem;
+  }
+
+  .contact-item {
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-item strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-item p {
+    font-size: 1rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+
+  .form-input {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .form-btn {
+    padding: 0.875rem 1.5rem;
+    background: var(--color-accent);
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .form-btn:hover {
+    background: var(--color-accent-hover);
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+/**
+ * src/pages/[lang]/politica-de-privacidade.astro
+ * Comprehensive Privacy Policy page strictly compliant with Google AdSense, LGPD & GDPR requirements.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { useTranslations } from '../../i18n/utils';
+import { SUPPORTED_LOCALES, SITE_URL, type SupportedLocale } from '../../i18n/constants';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLocale };
+const t = useTranslations(lang);
+
+const hreflangAlternates = SUPPORTED_LOCALES.map((locale) => ({
+  hreflang: locale,
+  href: `${SITE_URL}/${locale}/politica-de-privacidade/`,
+}));
+
+const title = {
+  pt: 'Política de Privacidade e Cookies',
+  en: 'Privacy Policy & Cookies',
+  es: 'Política de Privacidad y Cookies',
+}[lang];
+---
+
+<BaseLayout
+  title={`${title} — TechFlow`}
+  description="Saiba como o TechFlow protege seus dados pessoais e cumpre as normas de privacidade LGPD e Google AdSense."
+  lang={lang}
+  hreflangAlternates={hreflangAlternates}
+  canonicalUrl={`${SITE_URL}/${lang}/politica-de-privacidade/`}
+>
+  <Header slot="header" lang={lang} />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-title">{title}</h1>
+      <p class="page-subtitle">Última atualização: Setembro de 2026</p>
+    </div>
+  </section>
+
+  <section class="page-content container">
+    <div class="prose">
+      <h2>1. Introdução e Compromisso com a Privacidade</h2>
+      <p>
+        O <strong>TechFlow</strong> valoriza e respeita a privacidade de seus leitores. Esta Política de Privacidade descreve como coletamos, usamos, armazenamos e protegemos suas informações pessoais ao acessar nosso portal de notícias, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018), o Regulamento Geral de Proteção de Dados (GDPR) e as Políticas do Programa de Monografias e Anúncios do <strong>Google AdSense</strong>.
+      </p>
+
+      <h2>2. Coleta de Informações e Uso de Cookies</h2>
+      <p>
+        Coletamos informações para prestar e melhorar nossos serviços aos leitores. As informações podem ser coletadas das seguintes formas:
+      </p>
+      <ul>
+        <li><strong>Informações Fornecidas Voluntariamente:</strong> Como endereço de e-mail ao se inscrever na nossa Newsletter gratuita ou ao preencher formulários de contato.</li>
+        <li><strong>Dados Coletados Automaticamente (Cookies e Logs):</strong> Como endereço IP, tipo de navegador, sistema operacional, páginas visitadas e tempo de permanência.</li>
+      </ul>
+
+      <h2>3. Anúncios de Terceiros e Google AdSense (Cookie DART)</h2>
+      <p>
+        O TechFlow utiliza serviços de publicidade fornecidos por parceiros de terceiros, incluindo o <strong>Google AdSense</strong>, para veicular anúncios quando você visita nosso portal:
+      </p>
+      <ul>
+        <li>O Google, como fornecedor de terceiros, utiliza cookies para veicular anúncios neste site.</li>
+        <li>Com o uso do <strong>cookie DART</strong>, o Google pode veicular anúncios para os usuários com base nas visitas feitas a este e a outros sites na Internet.</li>
+        <li>Os usuários podem desativar o uso do cookie DART visitando a Política de Privacidade da rede de conteúdo e dos anúncios do Google.</li>
+        <li>Utilizamos fornecedores de anúncios de terceiros que veiculam anúncios e coletam informações anônimas quando você visita nosso portal.</li>
+      </ul>
+
+      <h2>4. Google Analytics e Métricas de Audiência</h2>
+      <p>
+        Utilizamos ferramentas de análise web (como o Google Analytics) para entender como os visitantes interagem com o conteúdo. Essas ferramentas utilizam cookies para coletar informações estatísticas de tráfego de forma anônima e agregada.
+      </p>
+
+      <h2>5. Direitos dos Usuários (LGPD e GDPR)</h2>
+      <p>
+        De acordo com a legislação aplicável, os leitores têm o direito de solicitar a confirmação do tratamento de seus dados, o acesso aos dados armazenados, a correção de dados incompletos ou a exclusão definitiva do seu e-mail de nossas listas de transmissão a qualquer momento.
+      </p>
+
+      <h2>6. Contato do Encarregado de Proteção de Dados (DPO)</h2>
+      <p>
+        Para esclarecer dúvidas sobre esta Política de Privacidade ou exercer seus direitos de privacidade, entre em contato conosco através do e-mail: <strong>privacidade@techflow.blog</strong> ou visite nossa página de <a href={`/${lang}/contato/`}>Contato</a>.
+      </p>
+    </div>
+  </section>
+
+  <Footer slot="footer" lang={lang} />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3.5rem 0 2rem;
+    background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .page-content {
+    padding: 3.5rem 1.5rem;
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+</style>

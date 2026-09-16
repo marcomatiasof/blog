@@ -1,6 +1,7 @@
 ---
 /**
  * Footer.astro
+ * Professional footer with institutional links required by Google AdSense & LGPD.
  */
 import { useTranslations } from '../i18n/utils';
 import type { SupportedLocale } from '../i18n/constants';
@@ -26,9 +27,16 @@ const t = useTranslations(lang);
       <p class="footer__tagline">{t('site.tagline')}</p>
     </div>
 
+    <!-- Essential Legal & Institutional Links for AdSense Approval -->
+    <nav class="footer__links" aria-label="Links institucionais">
+      <a href={`/${lang}/sobre/`} class="footer__link">{t('nav.about')}</a>
+      <a href={`/${lang}/politica-de-privacidade/`} class="footer__link">{t('nav.privacy')}</a>
+      <a href={`/${lang}/termos-de-uso/`} class="footer__link">{t('nav.terms')}</a>
+      <a href={`/${lang}/contato/`} class="footer__link">{t('nav.contact')}</a>
+    </nav>
+
     <div class="footer__meta">
       <p class="footer__copyright">{t('footer.copyright')}</p>
-      <p class="footer__built">{t('footer.builtWith')}</p>
     </div>
   </div>
 </footer>
@@ -37,7 +45,7 @@ const t = useTranslations(lang);
   .footer {
     background: var(--color-bg-secondary);
     border-top: 1px solid var(--color-border);
-    padding: 2.5rem 0;
+    padding: 3rem 0;
     margin-top: 4rem;
   }
 
@@ -53,6 +61,7 @@ const t = useTranslations(lang);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    max-width: 380px;
   }
 
   .footer__logo {
@@ -60,32 +69,53 @@ const t = useTranslations(lang);
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--color-text-primary);
     letter-spacing: -0.02em;
   }
 
   .footer__tagline {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--color-text-muted);
     margin: 0;
+    line-height: 1.5;
+  }
+
+  .footer__links {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .footer__link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer__link:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
   }
 
   .footer__meta {
     text-align: right;
   }
 
-  .footer__copyright,
-  .footer__built {
-    font-size: 0.8rem;
+  .footer__copyright {
+    font-size: 0.825rem;
     color: var(--color-text-muted);
     margin: 0;
     line-height: 1.6;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .footer__inner { flex-direction: column; align-items: flex-start; }
+    .footer__links { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
     .footer__meta { text-align: left; }
   }
 </style>

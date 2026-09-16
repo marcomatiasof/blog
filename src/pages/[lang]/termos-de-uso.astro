@@ -1,0 +1,104 @@
+---
+/**
+ * src/pages/[lang]/termos-de-uso.astro
+ * Terms of Service / Terms of Use page.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { useTranslations } from '../../i18n/utils';
+import { SUPPORTED_LOCALES, SITE_URL, type SupportedLocale } from '../../i18n/constants';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLocale };
+const t = useTranslations(lang);
+
+const hreflangAlternates = SUPPORTED_LOCALES.map((locale) => ({
+  hreflang: locale,
+  href: `${SITE_URL}/${locale}/termos-de-uso/`,
+}));
+
+const title = {
+  pt: 'Termos de Uso e Condições de Serviço',
+  en: 'Terms of Service',
+  es: 'Términos de Uso',
+}[lang];
+---
+
+<BaseLayout
+  title={`${title} — TechFlow`}
+  description="Termos de Uso e condições gerais para acesso aos conteúdos e serviços do portal TechFlow."
+  lang={lang}
+  hreflangAlternates={hreflangAlternates}
+  canonicalUrl={`${SITE_URL}/${lang}/termos-de-uso/`}
+>
+  <Header slot="header" lang={lang} />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-title">{title}</h1>
+      <p class="page-subtitle">Última atualização: Setembro de 2026</p>
+    </div>
+  </section>
+
+  <section class="page-content container">
+    <div class="prose">
+      <h2>1. Aceitação dos Termos</h2>
+      <p>
+        Ao acessar e utilizar o portal de notícias <strong>TechFlow</strong>, você concorda expressamente em cumprir todos os termos, condições e avisos contidos neste documento. Se você não concordar com qualquer um destes termos, solicita-se que não continue utilizando o portal.
+      </p>
+
+      <h2>2. Propriedade Intelectual e Direitos Autorais</h2>
+      <p>
+        Todo o conteúdo publicado no TechFlow — incluindo textos, matérias jornalísticas, gráficos, fotografias, logotipos, vídeos e código-fonte — é de propriedade exclusiva do TechFlow ou de seus licenciadores e está protegido pelas leis de direitos autorais e propriedade intelectual. A reprodução parcial ou total é permitida somente com citação clara da fonte e link ativo.
+      </p>
+
+      <h2>3. Isenção de Responsabilidade Editorial</h2>
+      <p>
+        O TechFlow esforça-se para garantir que todas as informações publicadas sejam precisas e atualizadas. No entanto, o conteúdo é fornecido com fins estritamente informativos. O portal não se responsabiliza por decisões tomadas por leitores com base nas matérias ou por eventuais indisponibilidades temporárias do sistema.
+      </p>
+
+      <h2>4. Links para Sites de Terceiros</h2>
+      <p>
+        Nosso portal pode conter links para sites de terceiros e anunciantes. Não possuímos controle sobre o conteúdo ou práticas de privacidade desses sites externos e recomendamos que os leitores consultem as respectivas políticas de privacidade de cada plataforma.
+      </p>
+
+      <h2>5. Alterações nos Termos</h2>
+      <p>
+        Reservamo-nos o direito de atualizar ou modificar estes Termos de Uso a qualquer momento sem aviso prévio. Recomendamos a consulta periódica desta página.
+      </p>
+    </div>
+  </section>
+
+  <Footer slot="footer" lang={lang} />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3.5rem 0 2rem;
+    background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .page-content {
+    padding: 3.5rem 1.5rem;
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+</style>

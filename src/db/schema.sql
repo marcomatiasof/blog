@@ -68,7 +68,19 @@ CREATE TABLE pautas (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. Indexes for High-Performance Queries
+-- 7. Newsletter Subscribers Table
+CREATE TABLE subscribers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  locale VARCHAR(10) DEFAULT 'pt',
+  is_active BOOLEAN DEFAULT TRUE,
+  source VARCHAR(50) DEFAULT 'website_hero',
+  subscribed_at TIMESTAMPTZ DEFAULT NOW(),
+  unsubscribed_at TIMESTAMPTZ
+);
+
+-- 8. Indexes for High-Performance Queries
 CREATE INDEX idx_articles_status_locale ON articles(status, locale);
 CREATE INDEX idx_articles_slug ON articles(slug);
 CREATE INDEX idx_articles_published_at ON articles(published_at DESC);
+CREATE INDEX idx_subscribers_active_locale ON subscribers(is_active, locale);

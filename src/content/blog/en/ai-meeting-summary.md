@@ -5,6 +5,7 @@ date: "2026-09-15"
 locale: "en"
 slug: "best-ai-meeting-summary-tool"
 translationKey: "ai-meeting-summary"
+image: "/images/ai-meeting-summary.jpg"
 category: "Ferramentas de IA"
 tags: ["ai-tools", "meeting-notes", "productivity"]
 og_title: "How to Automate Your Meeting Notes with AI in 2026"

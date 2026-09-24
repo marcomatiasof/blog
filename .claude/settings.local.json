@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(git --version)",
+      "Bash(npm install *)",
+      "Bash(npm ls *)",
+      "Bash(npm run *)",
+      "Read(//tmp/**)",
+      "Bash(break)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/artigos)",
+      "Bash(curl -s http://localhost:3000/artigos/como-ganhar-dinheiro-com-ia-em-2026)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(taskkill //F //IM node.exe //T)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(npx playwright *)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(npx --yes lighthouse http://localhost:3000/ --only-categories=performance,seo,accessibility,best-practices --chrome-path=C:/Users/Marco/AppData/Local/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-win64/chrome-headless-shell.exe '--chrome-flags=--headless=new --no-sandbox --disable-gpu' --output=json --output-path=C:/Users/Marco/AppData/Local/Temp/claude/D--blog/7888f402-39d4-45f2-bde1-f4c0e44f2bfc/scratchpad/lhm.json --quiet)",
+      "Bash(node -e ' *)",
+      "Bash(cd /d)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(npm --prefix \"D:/blog\" run dev)",
+      "Bash(command -v belt)",
+      "Bash(belt --version)",
+      "Bash(xargs -I{} basename {} .md)",
+      "Bash(npx --yes lighthouse http://localhost:3000/artigos/o-que-e-o-chatgpt --only-categories=performance,seo,accessibility,best-practices --chrome-path=C:/Users/Marco/AppData/Local/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-win64/chrome-headless-shell.exe '--chrome-flags=--headless=new --no-sandbox --disable-gpu' --preset=desktop --output=json --output-path=C:/Users/Marco/AppData/Local/Temp/claude/D--blog/7888f402-39d4-45f2-bde1-f4c0e44f2bfc/scratchpad/lh_art_d.json --quiet)",
+      "Bash(npx --yes lighthouse http://localhost:3000/artigos/o-que-e-o-chatgpt --only-categories=performance,seo,accessibility,best-practices --chrome-path=C:/Users/Marco/AppData/Local/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-win64/chrome-headless-shell.exe '--chrome-flags=--headless=new --no-sandbox --disable-gpu' --output=json --output-path=C:/Users/Marco/AppData/Local/Temp/claude/D--blog/7888f402-39d4-45f2-bde1-f4c0e44f2bfc/scratchpad/lh_art_m.json --quiet)",
+      "Bash(node -e 'const r=require\\('\\\\''C:/Users/Marco/AppData/Local/Temp/claude/D--blog/7888f402-39d4-45f2-bde1-f4c0e44f2bfc/scratchpad/lh_art_d.json'\\\\''\\);for\\(const k of ['\\\\''performance'\\\\'','\\\\''accessibility'\\\\'','\\\\''best-practices'\\\\'','\\\\''seo'\\\\'']\\)console.log\\('\\\\'' '\\\\'',k.padEnd\\(15\\),Math.round\\(r.categories[k].score*100\\)\\)')",
+      "Bash(node -e 'const r=require\\('\\\\''C:/Users/Marco/AppData/Local/Temp/claude/D--blog/7888f402-39d4-45f2-bde1-f4c0e44f2bfc/scratchpad/lh_art_m.json'\\\\''\\);for\\(const k of ['\\\\''performance'\\\\'','\\\\''accessibility'\\\\'','\\\\''best-practices'\\\\'','\\\\''seo'\\\\'']\\)console.log\\('\\\\'' '\\\\'',k.padEnd\\(15\\),Math.round\\(r.categories[k].score*100\\)\\)')"
+    ]
+  }
+}

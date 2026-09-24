@@ -1,0 +1,106 @@
+================================================================
+ANÁLISE DA PASTA "skill copy conteudo post" + SKILL PROMPT FOFINHO
+Data: 2026-07-08
+================================================================
+
+----------------------------------------------------------------
+1. ESTRUTURA GERAL DA PASTA — STATUS: OK
+----------------------------------------------------------------
+- 3 scripts Python compilam sem erro (py_compile OK).
+  Pillow 12.2.0 instalado e funcional.
+- 30 posts 100% consistentes: cada um tem legenda .txt +
+  imagem de feed + story. Nenhum post órfão (0 faltando).
+- agendador/agenda.csv existe com 60 linhas (30 feed + 30 story),
+  todas apontando para imagens reais existentes.
+- SPLINKAPP Logo.png presente (usado pelo gerador de imagens).
+
+Arquivos principais:
+  - gerar_legendas.py  -> gera 1 .txt por post (legenda + hashtags)
+  - gerar_posts.py     -> renderiza imagens feed (4:5) e story (9:16)
+  - agendador/gerar_agenda.py -> cria agenda.csv
+  - agendador/postar_agendado.py -> robô semi-automático de postagem
+  - agendador/COMO USAR.md -> manual do robô
+
+----------------------------------------------------------------
+2. SKILL "PROMPT FOFINHO" (PF) — ANÁLISE
+----------------------------------------------------------------
+Arquivos: 3 cópias do mesmo PDF
+  - ## Prompt Fofinho (1).pdf
+  - ## Prompt Fofinho (1) [ #ZDMPRIMEpCOM ].pdf
+  - ## Prompt Fofinho (1) [ #ZDMPRIMEpCOM ](1).pdf
+
+O que é:
+  Prompt de PERSONA para um GPT chamado "Fofinho" — um
+  estrategista de percepção visual e narrativa que atua como
+  "cirurgião de feed". Personalidade: 80% Doug (ácido, direto,
+  constrange) + 20% Don (elegante, magnético, teatral).
+  Entrega análises como se estivesse numa sala com luz baixa e
+  quadro negro.
+
+Ritual de abertura obrigatório:
+  Sempre inicia com ação narrativa em itálico+negrito descrevendo
+  Fofinho como personagem (ex.: "Fofinho fecha o livro... pega a
+  caneta... Me mande os prints do feed"). Nunca pergunta se o
+  usuário quer o framework — ELE VAI USAR os 6 cortes. Sempre.
+
+Os 6 CORTES (framework fixo, não mudar nomes):
+  1. Arquétipo de Posicionamento
+  2. Arquitetura de Formato
+  3. Engenharia de Hooks
+  4. Matriz Temática Oculta
+  5. Gatilhos Psicológicos Dominantes
+  6. Diagnóstico de Percepção
+
+Estrutura da resposta:
+  - Abertura em itálico+negrito (personagem)
+  - 10 parágrafos críticos/narrativos sobre o feed
+  - Framework com 3 parágrafos + NOTA 1-10 para cada corte
+    (explica como chegar a 10/10, parágrafo-resumo por parte)
+  - Finalização com frase metida/provocativa
+  - Módulo extra "Reflexo Estratégico": se o usuário manda prints
+    do PRÓPRIO perfil, vira "espelho estratégico" e entrega bloco
+    "Aplicação Direta" com ideias práticas (o que admira + o que o
+    feed sustenta com autenticidade).
+
+Regras:
+  - Nunca muda nomes do framework
+  - Nunca pede desculpas pela leitura
+  - Nunca trata feed como "conteúdo fofo" — trata como campanha
+    mal resolvida
+  - Variação obrigatória de frases/entrada (Fofinho detesta déjà vu)
+
+Status do conteúdo PF: ÍNTEGRO e bem estruturado.
+
+----------------------------------------------------------------
+3. PROBLEMAS ENCONTRADOS
+----------------------------------------------------------------
+[!] 1. agenda.csv VENCIDA
+    START_DATE = "2026-06-22" está no passado (hoje 08/07/2026).
+    Se ligar o robô agora, ele dispara os 60 posts de uma vez
+    como "vencidos". Corrigir: editar data em
+    agendador/gerar_agenda.py para o futuro e rodar de novo.
+
+[!] 2. Typo em cal-04-S1-Qui (gerar_legendas.py)
+    Hashtag "#folldowup" deveria ser "#followup". Vai pro ar.
+
+[!] 3. Código morto em gerar_posts.py (linha 434)
+    "img.convert("RGB").save(...) if False else None"
+    Inofensivo, mas pode ser removido.
+
+[!] 4. PF PDF duplicado/redundante
+    - Conteúdo se repete (págs 1-4 = págs 5-8 no mesmo arquivo)
+    - 3 cópias idênticas do mesmo arquivo
+    - Aviso "wrong pointing object" = PDF levemente malformado,
+      mas legível.
+
+[ ] 5. Pastas/arquivos não usados pelo pipeline (não quebram nada)
+    - amostras-conceito/ (apenas referência)
+    - imagens-posts/Image 1.png e posts extras (sobra)
+
+----------------------------------------------------------------
+4. CONCLUSÃO
+----------------------------------------------------------------
+Sistema funcional e consistente. Skill PF está íntegra (apesar da
+duplicação do PDF). Pendências menores: data da agenda, typo de
+hashtag e limpeza do PDF duplicado.
+================================================================

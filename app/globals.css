@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-brand-50: #eef6ff;
+  --color-brand-100: #d9eaff;
+  --color-brand-200: #bcd8ff;
+  --color-brand-300: #8ec0ff;
+  --color-brand-400: #599dff;
+  --color-brand-500: #3378f6;
+  --color-brand-600: #1f5ae4;
+  --color-brand-700: #1a47c4;
+  --color-brand-800: #1b3d9f;
+  --color-brand-900: #1c377e;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+:root {
+  --bg: #ffffff;
+  --fg: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --card: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1120;
+    --fg: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --card: #0f172a;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+.border-app {
+  border-color: var(--border);
+}
+.bg-card {
+  background-color: var(--card);
+}

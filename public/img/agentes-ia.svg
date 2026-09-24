@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Ilustração Agentes de IA">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a47c4"/>
+      <stop offset="1" stop-color="#0b1120"/>
+    </linearGradient>
+    <linearGradient id="node" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8ec0ff"/>
+      <stop offset="1" stop-color="#1f5ae4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg2)"/>
+  <!-- Rede de agentes conectados -->
+  <g stroke="#599dff" stroke-width="3" opacity="0.7">
+    <line x1="400" y1="225" x2="180" y2="120"/>
+    <line x1="400" y1="225" x2="180" y2="330"/>
+    <line x1="400" y1="225" x2="620" y2="120"/>
+    <line x1="400" y1="225" x2="620" y2="330"/>
+    <line x1="400" y1="225" x2="400" y2="90"/>
+    <line x1="400" y1="225" x2="400" y2="360"/>
+  </g>
+  <!-- Hub central -->
+  <circle cx="400" cy="225" r="58" fill="url(#node)"/>
+  <g transform="translate(400,225)" fill="none" stroke="#0b1120" stroke-width="6" stroke-linecap="round">
+    <circle r="8" fill="#0b1120" stroke="none"/>
+    <path d="M-26 -14 L0 -30 L26 -14 M-26 14 L0 30 L26 14"/>
+  </g>
+  <!-- Nós satélites (agentes) -->
+  <g fill="#ffffff">
+    <circle cx="180" cy="120" r="26"/><circle cx="180" cy="330" r="26"/>
+    <circle cx="620" cy="120" r="26"/><circle cx="620" cy="330" r="26"/>
+    <circle cx="400" cy="90" r="26"/><circle cx="400" cy="360" r="26"/>
+  </g>
+  <g fill="#1f5ae4" font-family="ui-sans-serif,system-ui,Arial" font-size="20" font-weight="800" text-anchor="middle">
+    <text x="180" y="127">A</text><text x="180" y="337">A</text>
+    <text x="620" y="127">A</text><text x="620" y="337">A</text>
+    <text x="400" y="97">A</text><text x="400" y="367">A</text>
+  </g>
+</svg>

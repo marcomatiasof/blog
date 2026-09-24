@@ -33,8 +33,8 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
   },
-  verification: {
-    google: "bdpxRE1l2_caehBhn2YgpGcC",
+  other: {
+    "ga-site-verification": "bdpxRE1l2_caehBhn2YgpGcC",
   },
 };
 

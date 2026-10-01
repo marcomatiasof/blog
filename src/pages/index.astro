@@ -18,7 +18,7 @@ const otherPosts = allPosts.slice(1, 5); // Sidebar
       <span class="category">{featuredPost.frontmatter.category}</span>
       <a href={`/posts/${featuredPost.file.split('/').pop().replace('.md', '')}`}>
         <div class="image-wrapper">
-          <img src={featuredPost.frontmatter.cover} alt={featuredPost.frontmatter.title} />
+          <img src={featuredPost.frontmatter.cover || '/img/agentes_ia.jpg'} alt={featuredPost.frontmatter.title} />
         </div>
         <h2 class="featured-title">{featuredPost.frontmatter.title}</h2>
       </a>

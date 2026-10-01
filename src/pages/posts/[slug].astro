@@ -28,7 +28,7 @@ const { post } = Astro.props;
     </div>
     
     <div class="cover">
-      <img src={post.frontmatter.cover} alt={post.frontmatter.title} />
+      <img src={post.frontmatter.cover || '/img/agentes_ia.jpg'} alt={post.frontmatter.title} />
     </div>
 
     <div class="post-content">

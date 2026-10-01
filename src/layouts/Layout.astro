@@ -15,11 +15,11 @@ const { title } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <!-- SEO e Google Analytics -->
-    <meta name="description" content="AIMonetiza - O principal portal de notícias e tutoriais sobre Inteligência Artificial, negócios e monetização." />
-    <!-- Google Fonts: Inter -->
+    <meta name="description" content="TechFlow - O principal portal de notícias e tutoriais sobre Inteligência Artificial, negócios e tecnologia." />
+    <!-- Google Fonts: Inter e UnifrakturMaguntia (estilo The New York Times) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style is:global>
       :root {
         --color-black: #111111;
@@ -56,9 +56,10 @@ const { title } = Astro.props;
         padding: 2.5rem 0;
       }
       header.logo-area h1 {
-        font-size: 3.5rem;
-        font-weight: 800;
-        letter-spacing: -1.5px;
+        font-family: 'UnifrakturMaguntia', serif;
+        font-size: 4.5rem;
+        font-weight: 400;
+        letter-spacing: 0;
       }
       /* Navbar */
       nav.main-nav {
@@ -97,12 +98,12 @@ const { title } = Astro.props;
   </head>
   <body>
     <div class="topbar">
-      <span>AIMonetiza News</span>
+      <span>TechFlow News</span>
       <span>Português (BR)</span>
     </div>
     
     <header class="logo-area">
-      <h1>AIMonetiza</h1>
+      <h1>TechFlow</h1>
     </header>
 
     <nav class="main-nav">
@@ -118,7 +119,7 @@ const { title } = Astro.props;
     </main>
 
     <footer>
-      &copy; 2026 AIMonetiza. Focado no seu próximo $100.
+      &copy; 2026 TechFlow. Focado no seu próximo grande negócio.
     </footer>
   </body>
 </html>

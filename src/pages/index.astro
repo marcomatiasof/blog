@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 
 // Usar o Vite import.meta.glob para pegar os arquivos markdown
-const allPosts = await Astro.glob('../../content/posts/*.md');
+const allPosts = Object.values(await import.meta.glob('../../content/posts/*.md', { eager: true }));
 
 // Ordenar do mais novo pro mais antigo (por data)
 allPosts.sort((a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf());

@@ -4,7 +4,7 @@ description: "Os 7 modelos de negócio mais lucrativos usando IA hoje — do fre
 date: "2026-07-09"
 category: "Monetização"
 author: "AIMonetiza"
-cover: "/img/renda-ia.svg"
+cover: "/img/dinheiro_ia.jpg"
 ---
 
 A Inteligência Artificial deixou de ser promessa e virou **ferramenta de trabalho**. Neste guia você vai ver 7 formas reais de transformar IA em renda — sem precisar ser programador.

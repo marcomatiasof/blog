@@ -1,0 +1,124 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <!-- SEO e Google Analytics -->
+    <meta name="description" content="AIMonetiza - O principal portal de notícias e tutoriais sobre Inteligência Artificial, negócios e monetização." />
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style is:global>
+      :root {
+        --color-black: #111111;
+        --color-gray: #444444;
+        --color-lightgray: #eaeaea;
+        --color-white: #ffffff;
+        --color-accent: #e60000;
+        --font-main: 'Inter', sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: var(--font-main);
+        background-color: var(--color-white);
+        color: var(--color-black);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { text-decoration: none; color: inherit; transition: color 0.2s ease; }
+      
+      /* Topbar */
+      .topbar {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--color-gray);
+        border-bottom: 1px solid var(--color-lightgray);
+        padding: 0.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        text-transform: uppercase;
+      }
+      /* Header/Logo */
+      header.logo-area {
+        text-align: center;
+        padding: 2.5rem 0;
+      }
+      header.logo-area h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+      /* Navbar */
+      nav.main-nav {
+        border-top: 1px solid var(--color-lightgray);
+        border-bottom: 4px solid var(--color-black);
+        display: flex;
+        justify-content: center;
+        gap: 2.5rem;
+        padding: 1rem 0;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      nav.main-nav a:hover {
+        color: var(--color-accent);
+      }
+      
+      /* Container */
+      .container {
+        max-width: 1200px;
+        margin: 2.5rem auto;
+        padding: 0 1.5rem;
+      }
+      
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 3rem 0;
+        border-top: 1px solid var(--color-lightgray);
+        margin-top: 4rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--color-gray);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <span>AIMonetiza News</span>
+      <span>Português (BR)</span>
+    </div>
+    
+    <header class="logo-area">
+      <h1>AIMonetiza</h1>
+    </header>
+
+    <nav class="main-nav">
+      <a href="/">Início</a>
+      <a href="/">Inteligência Artificial</a>
+      <a href="/">Negócios</a>
+      <a href="/">Monetização</a>
+      <a href="/">Tabelas</a>
+    </nav>
+
+    <main class="container">
+      <slot />
+    </main>
+
+    <footer>
+      &copy; 2026 AIMonetiza. Focado no seu próximo $100.
+    </footer>
+  </body>
+</html>

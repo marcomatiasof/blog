@@ -1,53 +1,43 @@
-# AIMonetiza
+# Astro Starter Kit: Minimal
 
-Blog sobre Inteligência Artificial, mercado financeiro e monetização.
-Construído com **Next.js 16 + Tailwind CSS 4 + Markdown** (sem WordPress).
-
-## Rodar localmente
-
-```bash
-npm install      # só na primeira vez
-npm run dev      # http://localhost:3000
+```sh
+npm create astro@latest -- --template minimal
 ```
 
-## Publicar um novo artigo
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-Crie um arquivo `.md` em `content/posts/`. Exemplo:
+## 🚀 Project Structure
 
-```markdown
----
-title: "Título do artigo"
-description: "Resumo que aparece nos cards e no SEO."
-date: "2026-07-09"
-category: "Monetização"
-author: "AIMonetiza"
----
+Inside of your Astro project, you'll see the following folders and files:
 
-Conteúdo em **Markdown** normal. Suporta tabelas, listas,
-código com destaque de sintaxe, citações etc.
+```text
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
 ```
 
-O artigo aparece automaticamente na home e em `/artigos`,
-com URL `/artigos/nome-do-arquivo`.
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-## Estrutura
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-```
-app/                 Páginas e componentes (App Router)
-  page.tsx           Home
-  artigos/           Lista + [slug] do artigo
-  sobre/             Página institucional
-  components/        Header, Footer, PostCard
-content/posts/       Seus artigos em Markdown  ← escreva aqui
-lib/                 config do site + leitura dos posts
-docs/                Plano original do projeto
-```
+Any static assets, like images, can be placed in the `public/` directory.
 
-## Configuração do site
+## 🧞 Commands
 
-Edite `lib/config.ts` para mudar nome, descrição, menu e categorias.
+All commands are run from the root of the project, from a terminal:
 
-## Deploy
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-Recomendado: **Vercel** (grátis). Suba o projeto no GitHub e conecte.
-Build: `npm run build`.
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

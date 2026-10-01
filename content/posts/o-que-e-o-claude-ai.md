@@ -5,7 +5,7 @@ date: "2026-07-07"
 category: "Inteligência Artificial"
 author: "AIMonetiza"
 type: "Pilar"
-cover: "/img/claude.svg"
+cover: "/img/claude_guia.jpg"
 ---
 
 Quando se fala em inteligência artificial generativa, o ChatGPT costuma ser o primeiro nome que vem à cabeça. Mas existe um concorrente que conquistou a admiração de profissionais que trabalham com textos longos, análise de documentos e tarefas que exigem raciocínio cuidadoso: o **Claude AI**, criado pela empresa Anthropic. Se você quer entender o que é o Claude, por que ele é tão elogiado e em quais situações ele pode ser a melhor escolha, este guia é para você.

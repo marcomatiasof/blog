@@ -4,7 +4,7 @@ description: "Como montar uma máquina de conteúdo que trabalha por você usand
 date: "2026-07-05"
 category: "Renda Passiva"
 author: "AIMonetiza"
-cover: "/img/neural-abstract.svg"
+cover: "/img/renda_passiva.jpg"
 ---
 
 Renda passiva não é "dinheiro sem trabalho". É **trabalho feito uma vez que continua pagando**. E conteúdo é o ativo digital mais poderoso para isso.

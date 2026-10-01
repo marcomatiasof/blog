@@ -5,7 +5,7 @@ date: "2026-07-08"
 category: "Inteligência Artificial"
 author: "AIMonetiza"
 type: "Pilar"
-cover: "/img/agentes-ia.svg"
+cover: "/img/agentes_ia.jpg"
 ---
 
 Você provavelmente já usou um assistente de inteligência artificial para responder uma pergunta ou escrever um texto. Mas imagine algo diferente: uma IA que não apenas responde, mas **age** — que recebe um objetivo, planeja os passos, executa cada um deles usando ferramentas e entrega o resultado final sem você precisar conduzir a conversa a cada etapa. Isso é um **agente de IA**, e muita gente considera essa a próxima grande revolução da tecnologia.

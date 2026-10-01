@@ -5,7 +5,7 @@ date: "2026-07-09"
 category: "Inteligência Artificial"
 author: "AIMonetiza"
 type: "Pilar"
-cover: "/img/chatgpt.svg"
+cover: "/img/chatgpt_guia.jpg"
 ---
 
 Se existe uma ferramenta que mudou a forma como as pessoas trabalham, estudam e criam nos últimos anos, ela se chama **ChatGPT**. Em poucos meses após o lançamento, virou a aplicação de tecnologia que mais rápido chegou a 100 milhões de usuários na história. Mas afinal, **o que é o ChatGPT** — e por que tanta gente está usando essa inteligência artificial para economizar horas de trabalho e até criar novas fontes de renda?

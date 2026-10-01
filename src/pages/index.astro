@@ -1,0 +1,132 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Usar o Vite import.meta.glob para pegar os arquivos markdown
+const allPosts = await Astro.glob('../../content/posts/*.md');
+
+// Ordenar do mais novo pro mais antigo (por data)
+allPosts.sort((a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf());
+
+const featuredPost = allPosts[0];
+const otherPosts = allPosts.slice(1, 5); // Sidebar
+---
+
+<Layout title="AIMonetiza - Início">
+  <div class="news-grid">
+    <!-- Esquerda: Destaque -->
+    <div class="featured">
+      <span class="category">{featuredPost.frontmatter.category}</span>
+      <a href={`/posts/${featuredPost.file.split('/').pop().replace('.md', '')}`}>
+        <div class="image-wrapper">
+          <img src={featuredPost.frontmatter.cover} alt={featuredPost.frontmatter.title} />
+        </div>
+        <h2 class="featured-title">{featuredPost.frontmatter.title}</h2>
+      </a>
+      <p class="meta">Por {featuredPost.frontmatter.author} &bull; {featuredPost.frontmatter.date}</p>
+    </div>
+
+    <!-- Direita: Sidebar/Opinião -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">ÚLTIMAS NOTÍCIAS</h3>
+      <div class="sidebar-list">
+        {otherPosts.map((post) => (
+          <article class="sidebar-item">
+            <span class="category">{post.frontmatter.category}</span>
+            <a href={`/posts/${post.file.split('/').pop().replace('.md', '')}`}>
+              <h4>{post.frontmatter.title}</h4>
+            </a>
+            <p class="meta">Por {post.frontmatter.author}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .news-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3.5rem;
+  }
+  
+  /* Categoria Tag */
+  .category {
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  
+  .meta {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray);
+    margin-top: 1rem;
+    text-transform: uppercase;
+  }
+
+  /* Featured Post */
+  .featured-title {
+    font-size: 2.8rem;
+    line-height: 1.05;
+    margin-top: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+  .featured a:hover .featured-title {
+    color: var(--color-accent);
+  }
+  .image-wrapper {
+    overflow: hidden;
+  }
+  .image-wrapper img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .featured:hover .image-wrapper img {
+    transform: scale(1.03);
+  }
+
+  /* Sidebar */
+  .sidebar-title {
+    font-size: 1rem;
+    border-bottom: 3px solid var(--color-black);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+  .sidebar-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-lightgray);
+  }
+  .sidebar-item:last-child {
+    border-bottom: none;
+  }
+  .sidebar-item h4 {
+    font-size: 1.25rem;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .sidebar-item a:hover h4 {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 900px) {
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+    nav.main-nav {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  }
+</style>
